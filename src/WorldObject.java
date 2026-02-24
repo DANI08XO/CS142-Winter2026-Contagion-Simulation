@@ -1,19 +1,11 @@
 // WorldObject.java
 
 public abstract class WorldObject {
+    public boolean isCarryable() { return false; }
 
-    // can an ant pick this up and carry it?
-    public boolean isCarryable() {
-        return false;
-    }
+    public boolean isEdible() { return false; }
 
-    // can an ant consume this for energy?
-    public boolean isEdible() {
-        return false;
-    }
+    public char getSymbol() { return '?'; }
 
-    // generic symbol system for GUI
-    public char getSymbol() {
-        return '?';
-    }
+    public int energyValue() { return 0; }
 }

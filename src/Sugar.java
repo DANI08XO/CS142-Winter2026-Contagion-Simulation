@@ -1,6 +1,6 @@
-// Resource.java
+// Sugar.java
 
-public abstract class Resource extends WorldObject {
+public class Sugar extends Resource {
     @Override
     public boolean isCarryable() { return true; }
 
@@ -8,8 +8,8 @@ public abstract class Resource extends WorldObject {
     public boolean isEdible() { return true; }
 
     @Override
-    public char getSymbol() { return '?'; }
+    public char getSymbol() { return '$'; }
 
     @Override
-    public int energyValue() { return 0; }
+    public int energyValue() { return 50; }
 }
