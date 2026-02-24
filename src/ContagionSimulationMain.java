@@ -43,45 +43,69 @@ public class ContagionSimulationMain {
             if (populationSize == -1) break;
             System.out.println("Population size: " + populationSize);
 
-            // User set amount of children, adolescents, adults, and elders
+            // User set amount of babies, children, adolescents, adults, and elders. User also set how many males/females for each one
+            int babyAmount = -1;
             int childrenAmount = -1;
             int adoleAmount = -1;
             int adultAmount = -1;
             int elderAmount = -1;
 
+            int babyMales = -1;
+            int childrenMales = -1;
+            int adoleMales = -1;
+            int adultMales = -1;
+            int elderMales = -1;
+
             // Keep repeating until user types in valid numbers that add up to 100
             while (true) {
+
+                babyAmount = getPercentage(input, "What percentage of your population would you like to be babies? ");
+                if (babyAmount == -1) break;
+                babyMales = getPercentage(input, "What percentage of babies would you like to be males? ");
 
                 childrenAmount = getPercentage(input,
                         "What percentage of your population would you like to be children? ");
                 if (childrenAmount == -1) break;
+                childrenMales = getPercentage(input, "What percentage of children would you like to be males? ");
 
                 adoleAmount = getPercentage(input,
                         "What percentage of your population would you like to be adolescents? ");
                 if (adoleAmount == -1) break;
+                adoleMales = getPercentage(input, "What percentage of adolescents would you like to be males? ");
 
                 adultAmount = getPercentage(input,
                         "What percentage of your population would you like to be adults? ");
                 if (adultAmount == -1) break;
+                adultMales = getPercentage(input, "What percentage of adults would you like to be males? ");
 
                 elderAmount = 100 - (childrenAmount + adoleAmount + adultAmount);
 
                 if (elderAmount < 0) {
                     System.out.println("Percentages exceed 100. Try again.\n");
                 } else {
+                    elderMales = getPercentage(input, "What percentage of elder would you like to be males? (Note: elder percentage has already been calculated: " + elderAmount + ")" );
                     break;
                 }
             }
 
             // Invalid numbers
-            if (childrenAmount == -1 || adoleAmount == -1 || adultAmount == -1) {
+            if (babyAmount == -1 ||childrenAmount == -1 || adoleAmount == -1 || adultAmount == -1) {
                 break;
             }
 
+            System.out.println("Babies percentage: " + babyAmount + "%");
+            System.out.println("Babies male percentage: " + babyMales + "% female percentage: " + (100-babyMales) + "%");
             System.out.println("Children percentage: " + childrenAmount + "%");
+            System.out.println("Children male percentage: " + childrenMales + "% female percentage: " + (100-childrenMales) + "%");
             System.out.println("Adolescents percentage: " + adoleAmount + "%");
+            System.out.println("Adolescents male percentage: " + adoleMales + "% female percentage: " + (100-adoleMales) + "%");
             System.out.println("Adults percentage: " + adultAmount + "%");
+            System.out.println("Adults male percentage: " + adultMales + "% female percentage: " + (100-adultMales) + "%");
             System.out.println("Elders percentage: " + elderAmount + "%");
+            System.out.println("Elders male percentage: " + elderMales + "% female percentage: " + (100-elderMales) + "%");
+
+            // User choose the percentage of peoople in simulation vaccinated
+            int vaccinated = getPercentage(input, "What percentage of the population is vaccinated? ");
 
         }
 
@@ -90,7 +114,6 @@ public class ContagionSimulationMain {
         input.close();
     */
     }
-
 
     // Helper method to handle percentage input
     public static int getPercentage(Scanner input, String message) {
