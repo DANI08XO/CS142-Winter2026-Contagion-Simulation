@@ -37,6 +37,7 @@ public class WorldGrid {
     public boolean setObjectAt(Point pos, WorldObject obj){
         if (!inBounds(pos)) return false;
         objects[pos.y][pos.x] = obj;
+        return true;
     }
 
     public WorldObject takeObject(Point pos){

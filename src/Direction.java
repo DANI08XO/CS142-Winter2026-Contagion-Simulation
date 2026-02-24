@@ -15,7 +15,7 @@ public enum Direction {
         this.dy = dy;
     }
 
-    public Direction[] allDirections(){
+    public static Direction[] allDirections(){
         return new Direction[]{NORTH, SOUTH, EAST, WEST};
     }
 }

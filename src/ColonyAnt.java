@@ -12,7 +12,17 @@ public class ColonyAnt extends Ant {
         this.home = home;
     }
 
-    public void setFoodStore(Point pos){
-        foodStore = pos;
+    public final Point getHome() { return home; }
+
+    public final Point getFoodStore() { return foodStore; }
+
+    public final void setFoodStore(Point foodStore) { this.foodStore = foodStore; }
+
+    public Direction returnHome() { return pathFind(home); }
+
+    public Direction depositFood() {
+        if (foodStore == null) return Direction.CENTER;
+        //TODO: handle logic when foodStore is null better
+        return pathFind(foodStore);
     }
 }
