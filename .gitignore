@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
@@ -5,6 +6,15 @@ out/
 .kotlin
 
 ### Eclipse ###
+=======
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+>>>>>>> d5738f00b2afcd82d7a6578f429cd32950bf165e
 .apt_generated
 .classpath
 .factorypath
@@ -12,9 +22,18 @@ out/
 .settings
 .springBeans
 .sts4-cache
+<<<<<<< HEAD
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+=======
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+>>>>>>> d5738f00b2afcd82d7a6578f429cd32950bf165e
 
 ### NetBeans ###
 /nbproject/private/
@@ -22,9 +41,25 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+<<<<<<< HEAD
 
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
+=======
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+>>>>>>> d5738f00b2afcd82d7a6578f429cd32950bf165e
+
+# IntelliJ project files
+.idea/
+out/
+
+# Compiled Java class files
+*.class
