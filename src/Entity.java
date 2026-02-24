@@ -15,6 +15,10 @@ public class Entity {
         NORTH, SOUTH, EAST, WEST, CENTER
     }
 
+    public boolean hasActed() {
+        return false;
+    }
+
     // Returns this entity's current x-coordinate.
     public final int getX() {
         return x;
