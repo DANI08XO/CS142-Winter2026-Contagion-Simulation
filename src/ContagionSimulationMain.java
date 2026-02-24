@@ -5,55 +5,70 @@ import java.util.Scanner;
 
 public class ContagionSimulationMain {
 
+    public static void main(String[] args) {
 
-    public static void main (String args[]) {
-
-        // Intro for our Project
-        System.out.println("Welcome to Codevid-19 final project for CS 142");
-        System.out.println("Our project will focus on simulating a disease spread");
-        System.out.println("The user will be able to control how deadly and contagious the disease is along with the population for the simulation");
-
-        // Create Scanner for user input
+        // Scanner for user input
         Scanner input = new Scanner(System.in);
-        System.out.print("Name of your disease? "); // User can name their disease
-        String userDiseaseName = input.nextLine();
 
-        String userInput = "";
+        // Intro to our Project
+        System.out.println("Welcome to Codevid-19 final project for CS 142");
+        System.out.println("This program simulates disease spread.");
 
-        while (!userInput.equals("quit")) {
+        // User wil be able to name their disease
+        System.out.print("Name of your disease? ");
+        String diseaseName = input.nextLine();
 
-            boolean validAnswerDeadly = false;
+        // While loop for the user input and questions
+        while (true) {
 
-            while (!validAnswerDeadly) {
-                System.out.println("How deadly do you want " + userDiseaseName + "? (Enter a percentage 1 - 100). Type \"quit\" to stop.");
-                String userDiseaseDeadly = input.nextLine();
-                int deadlyPercentage;
-                try {
-                    deadlyPercentage = Integer.parseInt(userDiseaseDeadly);
-                    System.out.println("Deadliness is set to " + deadlyPercentage + "%");
-                    validAnswerDeadly = true;
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid Input. Please enter a whole number");
-                }
-            }
+            // Get how deadly the disease is
+            int deadly = getPercentage(input,
+                    "How deadly do you want " + diseaseName + "? (1-100 or type quit to stop): ");
 
-            boolean validAnswerContagious = false;
+            if (deadly == -1) break;
 
-            while (!validAnswerContagious) {
-                System.out.println("How contagious do you want " + userDiseaseName + "? (Enter a percentage 1 - 100). Type \"quit\" to stop.");
-                String userDiseaseContagious = input.nextLine();
-                int infectiousPercentage;
-                try {
-                    infectiousPercentage = Integer.parseInt(userDiseaseContagious);
-                    System.out.println("How contagious is set to " + infectiousPercentage + "%");
-                    validAnswerContagious = true;
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid Input. Please enter a whole number");
-                }
+            // Get how contagious the disease is
+            int contagious = getPercentage(input,
+                    "How contagious do you want " + diseaseName + "? (1-100 or type quit to stop): ");
 
-            }
+            if (contagious == -1) break;
+
+            // Show stats of disease
+            System.out.println("Disease created:");
+            System.out.println("Deadliness: " + deadly + "%");
+            System.out.println("Contagiousness: " + contagious + "%");
         }
 
+        /*
+        System.out.println("Simulation ended.");
+        input.close();
+    */
     }
 
+
+    // Helper method to handle percentage input
+    public static int getPercentage(Scanner input, String message) {
+
+        while (true) {
+            System.out.print(message);
+            String userInput = input.nextLine();
+
+            if (userInput.equalsIgnoreCase("quit")) {
+                return -1;
+            }
+
+            try {
+                int percentage = Integer.parseInt(userInput);
+
+                if (percentage >= 1 && percentage <= 100) {
+                    return percentage;
+                } else {
+                    System.out.println("Please enter a number between 1 and 100.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a whole number.");
+            }
+        }
+    }
 }
