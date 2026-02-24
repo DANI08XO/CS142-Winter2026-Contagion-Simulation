@@ -1,0 +1,10 @@
+// Final Project: Contagion Simulation
+// Codevid-19 Group: Daniel, Kazuki, Helen, Kushal
+
+public class ContagionSimulationMain {
+
+    System.out.println("Welcome to Codevid-19 group project: Contagion Simulation!");
+    System.out.println("Our project will simulate a disease spread!");
+    System.out.println("The user will be able to control the virus death rate, how contagious, and the population in the simulation");
+
+}
