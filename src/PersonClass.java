@@ -30,7 +30,13 @@ public class PersonClass {
     public String getStatus() {
         return status;
     }
-
+ public void SetLocation(int newX, int newY){
+        this.x = newX;
+        this.y = newY;
+    }
+    public boolean isMale(){
+        return male;
+    }
 /*
     Public Entity(int x, int y)  ; // Constructor
     Public void setLocation(int x, int y) //sets the location of the entity
