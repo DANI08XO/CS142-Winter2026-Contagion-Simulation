@@ -4,6 +4,7 @@
  * This is a simple data holder class (no inheritance needed)
  * Created based on user input in the main class
  */
+
 public class Disease {
 
     public String name;        // Name of the disease (user can name it anything)

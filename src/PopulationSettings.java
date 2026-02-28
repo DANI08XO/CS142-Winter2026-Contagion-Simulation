@@ -1,17 +1,26 @@
 
-// Population Settings class for Contagion Simulation
+/*
+ * POPULATION SETTINGS CLASS - Stores all demographic information
+ * This is a simple data holder class
+ * Created based on user input in the main class
+ */
 
 public class PopulationSettings {
 
     private int populationSize;
+
     private int babyPercent;
     private int babyMalePercent;
+
     private int childPercent;
     private int childMalePercent;
+
     private int teenPercent;
     private int teenMalePercent;
+
     private int adultPercent;
     private int adultMalePercent;
+
     private int elderPercent;
     private int elderMalePercent;
 
@@ -85,11 +94,8 @@ public class PopulationSettings {
 
 }
 
-/**
- * POPULATION SETTINGS CLASS - Stores all demographic information
- * This is a simple data holder class
- * Created based on user input in the main class
- */
+
+/*
 public class PopulationSettings {
     // BASIC POPULATION INFO
     public int totalSize;  // Total number of people in simulation
@@ -116,6 +122,8 @@ public class PopulationSettings {
      * CONSTRUCTOR - Creates new PopulationSettings
      * @param size Total population size
      */
+
+/*
     public PopulationSettings(int size) {
         this.totalSize = size;
 
@@ -133,4 +141,4 @@ public class PopulationSettings {
         this.vaccinatedPercent = 0;
     }
 }
-
+*/
