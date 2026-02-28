@@ -9,6 +9,7 @@ import java.awt.Graphics;
  */
 
 public class Entity {
+
     // PUBLIC VARIABLES - Making them public makes them easy to access
     public int row;        // Which row in the grid this entity is on (like Y coordinate)
     public int col;        // Which column in the grid this entity is on (like X coordinate)

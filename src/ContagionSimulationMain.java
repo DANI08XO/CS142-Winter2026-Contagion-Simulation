@@ -75,42 +75,42 @@ public class ContagionSimulationMain {
             System.out.println("(Percentages should add up to 100%)");
 
             // Get baby percentage
-            settings.babyPercent = getPercentage(input, "What percentage of your population would you like to be babies? ");
-            if (settings.babyPercent == -1) break;
-            settings.babyMalePercent = getPercentage(input, "What percentage of babies would you like to be males? ");
+            settings.setBabyPercent(getPercentage(input, "What percentage of your population would you like to be babies? "));
+            if (settings.getBabyPercent() == -1) break;
+            settings.setBabyMalePercent(getPercentage(input, "What percentage of babies would you like to be males? "));
 
             // Get child percentage
-            settings.childPercent = getPercentage(input,
-                    "What percentage of your population would you like to be children? ");
-            if (settings.childPercent == -1) break;
-            settings.childMalePercent = getPercentage(input, "What percentage of children would you like to be males? ");
+            settings.setChildPercent(getPercentage(input,
+                    "What percentage of your population would you like to be children? "));
+            if (settings.getChildPercent() == -1) break;
+            settings.setChildMalePercent(getPercentage(input, "What percentage of children would you like to be males? "));
 
             // Get teen percentage
-            settings.teenPercent = getPercentage(input,
-                    "What percentage of your population would you like to be adolescents? ");
-            if (settings.teenPercent == -1) break;
-            settings.teenMalePercent = getPercentage(input, "What percentage of adolescents would you like to be males? ");
+            settings.setTeenPercent(getPercentage(input,
+                    "What percentage of your population would you like to be adolescents? "));
+            if (settings.getTeenPercent() == -1) break;
+            settings.setTeenMalePercent(getPercentage(input, "What percentage of adolescents would you like to be males? "));
 
             // Get adult percentage
-            settings.adultPercent = getPercentage(input,
-                    "What percentage of your population would you like to be adults? ");
-            if (settings.adultPercent == -1) break;
-            settings.adultMalePercent = getPercentage(input, "What percentage of adults would you like to be males? ");
+            settings.setAdultPercent(getPercentage(input,
+                    "What percentage of your population would you like to be adults? "));
+            if (settings.getAdultPercent() == -1) break;
+            settings.setAdultMalePercent(getPercentage(input, "What percentage of adults would you like to be males? "));
 
             // Calculate elder percentage (whatever is left to make 100%)
-            settings.elderPercent = 100 - (settings.babyPercent + settings.childPercent +
-                    settings.teenPercent + settings.adultPercent);
+            settings.setElderPercent(100 - (settings.getBabyPercent() + settings.getChildPercent() +
+                    settings.getTeenPercent() + settings.getAdultPercent()));
 
             // Check if percentages exceed 100% (error)
-            if (settings.elderPercent < 0) {
+            if (settings.getElderPercent() < 0) {
                 System.out.println("ERROR: Percentages exceed 100%. Please run again.");
                 break;
             } else {
                 // Get elder male percentage
-                settings.elderMalePercent = getPercentage(input,
+                settings.setElderMalePercent(getPercentage(input,
                         "What percentage of elders would you like to be males? (Elder percentage: " +
-                                settings.elderPercent + "%)" );
-                if (settings.elderMalePercent == -1) break;
+                                settings.elderPercent + "%)" ));
+                if (settings.getElderMalePercent() == -1) break;
             }
 
             // ============ SUMMARY ============
@@ -125,6 +125,8 @@ public class ContagionSimulationMain {
                     settings.adultMalePercent + "%, Females: " + (100-settings.adultMalePercent) + "%)");
             System.out.println("Elders: " + settings.elderPercent + "% (Males: " +
                     settings.elderMalePercent + "%, Females: " + (100-settings.elderMalePercent) + "%)");
+
+
 
             // ============ VACCINATION ============
             settings.vaccinatedPercent = getPercentage(input,

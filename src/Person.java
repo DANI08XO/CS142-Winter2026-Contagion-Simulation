@@ -1,4 +1,4 @@
-// Person class
+// Person class extends Entity, represents a default person
 
 import java.awt.*;
 
@@ -30,7 +30,7 @@ public class Person extends Entity {
     public String getStatus() {
         return status;
     }
- public void SetLocation(int newX, int newY){
+    public void SetLocation(int newX, int newY){
         this.x = newX;
         this.y = newY;
     }
@@ -50,4 +50,5 @@ public class Person extends Entity {
 */
 
 }
+
 

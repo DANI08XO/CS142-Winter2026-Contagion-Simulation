@@ -7,7 +7,7 @@ import java.awt.Graphics;
  * Represents a person who is NOT sick
  * Color: YELLOW
  */
-      public class HealthyPerson extends Person {
+      public class Healthy extends Person {
 
         /**
          * CONSTRUCTOR - Creates a new Healthy person
