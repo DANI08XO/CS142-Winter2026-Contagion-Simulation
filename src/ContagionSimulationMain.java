@@ -109,24 +109,22 @@ public class ContagionSimulationMain {
                 // Get elder male percentage
                 settings.setElderMalePercent(getPercentage(input,
                         "What percentage of elders would you like to be males? (Elder percentage: " +
-                                settings.elderPercent + "%)" ));
+                                settings.getElderPercent() + "%)" ));
                 if (settings.getElderMalePercent() == -1) break;
             }
 
             // ============ SUMMARY ============
             System.out.println("\n=== POPULATION SUMMARY ===");
-            System.out.println("Babies: " + settings.babyPercent + "% (Males: " +
-                    settings.babyMalePercent + "%, Females: " + (100-settings.babyMalePercent) + "%)");
-            System.out.println("Children: " + settings.childPercent + "% (Males: " +
-                    settings.childMalePercent + "%, Females: " + (100-settings.childMalePercent) + "%)");
-            System.out.println("Adolescents: " + settings.teenPercent + "% (Males: " +
-                    settings.teenMalePercent + "%, Females: " + (100-settings.teenMalePercent) + "%)");
-            System.out.println("Adults: " + settings.adultPercent + "% (Males: " +
-                    settings.adultMalePercent + "%, Females: " + (100-settings.adultMalePercent) + "%)");
-            System.out.println("Elders: " + settings.elderPercent + "% (Males: " +
-                    settings.elderMalePercent + "%, Females: " + (100-settings.elderMalePercent) + "%)");
-
-
+            System.out.println("Babies: " + settings.getBabyPercent() + "% (Males: " +
+                    settings.getBabyMalePercent() + "%, Females: " + (100-settings.getBabyMalePercent()) + "%)");
+            System.out.println("Children: " + settings.getChildPercent() + "% (Males: " +
+                    settings.getChildMalePercent() + "%, Females: " + (100-settings.getChildMalePercent()) + "%)");
+            System.out.println("Adolescents: " + settings.getTeenPercent() + "% (Males: " +
+                    settings.getTeenMalePercent() + "%, Females: " + (100-settings.getTeenMalePercent()) + "%)");
+            System.out.println("Adults: " + settings.getAdultPercent() + "% (Males: " +
+                    settings.getAdultMalePercent() + "%, Females: " + (100-settings.getAdultMalePercent()) + "%)");
+            System.out.println("Elders: " + settings.getElderPercent() + "% (Males: " +
+                    settings.getElderMalePercent() + "%, Females: " + (100-settings.getElderMalePercent()) + "%)");
 
             // ============ VACCINATION ============
             settings.vaccinatedPercent = getPercentage(input,
