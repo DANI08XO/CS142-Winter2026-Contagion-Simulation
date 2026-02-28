@@ -1,155 +1,224 @@
+
 // Final Project for CS 142: Contagion Simulation
 // Codevid-19 Group: Daniel, Kenzuki, Helen, Kushal
 
 import java.util.Scanner;
+import javax.swing.SwingUtilities;
 
+/**
+ * CONTAGION SIMULATION MAIN CLASS
+ * This is the ENTRY POINT of the program
+ * It handles:
+ * - User input via text interface
+ * - Creating disease and population settings
+ * - Launching the visual GUI
+ *
+ * This is a TEXT-BASED setup wizard that then opens a GRAPHICAL simulation
+ */
 public class ContagionSimulationMain {
 
+    /**
+     * MAIN METHOD - Where the program starts
+     * @param args Command line arguments (not used)
+     */
     public static void main(String[] args) {
 
-        // Scanner for user input
+        // Scanner for reading user input from keyboard
         Scanner input = new Scanner(System.in);
 
-        // Intro to our Project
+        // ============ INTRODUCTION ============
         System.out.println("Welcome to Codevid-19 final project for CS 142");
         System.out.println("This program simulates disease spread.");
 
-        // User wil be able to name their disease
+        // ============ DISEASE NAME ============
+        // User gets to name their disease (fun part!)
         System.out.print("Name of your disease? ");
         String diseaseName = input.nextLine();
 
-        // While loop for the user input and questions
+        // ============ MAIN LOOP ============
+        // Allows user to run multiple simulations without restarting
         while (true) {
 
-            // Get how deadly the disease is
+            // ============ DISEASE PROPERTIES ============
+            // Get how deadly the disease is (1-100%)
             int deadly = getPercentage(input,
                     "How deadly do you want " + diseaseName + "? (1 - 100 or type quit to stop): ");
 
-            if (deadly == -1) break;
+            if (deadly == -1) break; // User typed "quit"
 
-            // Get how contagious the disease is
+            // Get how contagious the disease is (1-100%)
             int contagious = getPercentage(input,
                     "How contagious do you want " + diseaseName + "? (1 - 100 or type quit to stop): ");
 
-            if (contagious == -1) break;
+            if (contagious == -1) break; // User typed "quit"
 
-            // Show stats of disease
-            System.out.println("Disease created:");
+            // Show disease stats to user
+            System.out.println("\nDisease created:");
+            System.out.println("Name: " + diseaseName);
             System.out.println("Deadliness: " + deadly + "%");
             System.out.println("Contagiousness: " + contagious + "%");
 
-            // User set population size (Minimum : 1, Max : 1 thousand)
+            // Create a Disease object to store these values
+            Disease disease = new Disease(diseaseName, deadly, contagious);
+
+            // ============ POPULATION SIZE ============
             int populationSize = getPopulationSize(input);
-            if (populationSize == -1) break;
+            if (populationSize == -1) break; // User typed "quit"
             System.out.println("Population size: " + populationSize);
 
-            // User set amount of babies, children, adolescents, adults, and elders. User also set how many males/females for each one
-            int babyAmount = -1;
-            int childrenAmount = -1;
-            int adoleAmount = -1;
-            int adultAmount = -1;
-            int elderAmount = -1;
+            // Create a PopulationSettings object to store demographics
+            PopulationSettings settings = new PopulationSettings(populationSize);
 
-            int babyMales = -1;
-            int childrenMales = -1;
-            int adoleMales = -1;
-            int adultMales = -1;
-            int elderMales = -1;
+            // ============ DEMOGRAPHICS ============
+            System.out.println("\nNow let's set up the population demographics:");
+            System.out.println("(Percentages should add up to 100%)");
 
-            // Keep repeating until user types in valid numbers that add up to 100
-            while (true) {
+            // Get baby percentage
+            settings.babyPercent = getPercentage(input, "What percentage of your population would you like to be babies? ");
+            if (settings.babyPercent == -1) break;
+            settings.babyMalePercent = getPercentage(input, "What percentage of babies would you like to be males? ");
 
-                babyAmount = getPercentage(input, "What percentage of your population would you like to be babies? ");
-                if (babyAmount == -1) break;
-                babyMales = getPercentage(input, "What percentage of babies would you like to be males? ");
+            // Get child percentage
+            settings.childPercent = getPercentage(input,
+                    "What percentage of your population would you like to be children? ");
+            if (settings.childPercent == -1) break;
+            settings.childMalePercent = getPercentage(input, "What percentage of children would you like to be males? ");
 
-                childrenAmount = getPercentage(input,
-                        "What percentage of your population would you like to be children? ");
-                if (childrenAmount == -1) break;
-                childrenMales = getPercentage(input, "What percentage of children would you like to be males? ");
+            // Get teen percentage
+            settings.teenPercent = getPercentage(input,
+                    "What percentage of your population would you like to be adolescents? ");
+            if (settings.teenPercent == -1) break;
+            settings.teenMalePercent = getPercentage(input, "What percentage of adolescents would you like to be males? ");
 
-                adoleAmount = getPercentage(input,
-                        "What percentage of your population would you like to be adolescents? ");
-                if (adoleAmount == -1) break;
-                adoleMales = getPercentage(input, "What percentage of adolescents would you like to be males? ");
+            // Get adult percentage
+            settings.adultPercent = getPercentage(input,
+                    "What percentage of your population would you like to be adults? ");
+            if (settings.adultPercent == -1) break;
+            settings.adultMalePercent = getPercentage(input, "What percentage of adults would you like to be males? ");
 
-                adultAmount = getPercentage(input,
-                        "What percentage of your population would you like to be adults? ");
-                if (adultAmount == -1) break;
-                adultMales = getPercentage(input, "What percentage of adults would you like to be males? ");
+            // Calculate elder percentage (whatever is left to make 100%)
+            settings.elderPercent = 100 - (settings.babyPercent + settings.childPercent +
+                    settings.teenPercent + settings.adultPercent);
 
-                elderAmount = 100 - (childrenAmount + adoleAmount + adultAmount);
-
-                if (elderAmount < 0) {
-                    System.out.println("Percentages exceed 100. Try again.\n");
-                } else {
-                    elderMales = getPercentage(input, "What percentage of elder would you like to be males? (Note: elder percentage has already been calculated: " + elderAmount + ")" );
-                    break;
-                }
-            }
-
-            // Invalid numbers
-            if (babyAmount == -1 ||childrenAmount == -1 || adoleAmount == -1 || adultAmount == -1) {
+            // Check if percentages exceed 100% (error)
+            if (settings.elderPercent < 0) {
+                System.out.println("ERROR: Percentages exceed 100%. Please run again.");
                 break;
+            } else {
+                // Get elder male percentage
+                settings.elderMalePercent = getPercentage(input,
+                        "What percentage of elders would you like to be males? (Elder percentage: " +
+                                settings.elderPercent + "%)" );
+                if (settings.elderMalePercent == -1) break;
             }
 
-            System.out.println("Babies percentage: " + babyAmount + "%");
-            System.out.println("Babies male percentage: " + babyMales + "% female percentage: " + (100-babyMales) + "%");
-            System.out.println("Children percentage: " + childrenAmount + "%");
-            System.out.println("Children male percentage: " + childrenMales + "% female percentage: " + (100-childrenMales) + "%");
-            System.out.println("Adolescents percentage: " + adoleAmount + "%");
-            System.out.println("Adolescents male percentage: " + adoleMales + "% female percentage: " + (100-adoleMales) + "%");
-            System.out.println("Adults percentage: " + adultAmount + "%");
-            System.out.println("Adults male percentage: " + adultMales + "% female percentage: " + (100-adultMales) + "%");
-            System.out.println("Elders percentage: " + elderAmount + "%");
-            System.out.println("Elders male percentage: " + elderMales + "% female percentage: " + (100-elderMales) + "%");
+            // ============ SUMMARY ============
+            System.out.println("\n=== POPULATION SUMMARY ===");
+            System.out.println("Babies: " + settings.babyPercent + "% (Males: " +
+                    settings.babyMalePercent + "%, Females: " + (100-settings.babyMalePercent) + "%)");
+            System.out.println("Children: " + settings.childPercent + "% (Males: " +
+                    settings.childMalePercent + "%, Females: " + (100-settings.childMalePercent) + "%)");
+            System.out.println("Adolescents: " + settings.teenPercent + "% (Males: " +
+                    settings.teenMalePercent + "%, Females: " + (100-settings.teenMalePercent) + "%)");
+            System.out.println("Adults: " + settings.adultPercent + "% (Males: " +
+                    settings.adultMalePercent + "%, Females: " + (100-settings.adultMalePercent) + "%)");
+            System.out.println("Elders: " + settings.elderPercent + "% (Males: " +
+                    settings.elderMalePercent + "%, Females: " + (100-settings.elderMalePercent) + "%)");
 
-            // User choose the percentage of peoople in simulation vaccinated
-            int vaccinated = getPercentage(input, "What percentage of the population is vaccinated? ");
+            // ============ VACCINATION ============
+            settings.vaccinatedPercent = getPercentage(input,
+                    "What percentage of the population is vaccinated? ");
 
+            if (settings.vaccinatedPercent == -1) break;
+
+            // ============ LAUNCH SIMULATION ============
+            System.out.println("\n=== LAUNCHING SIMULATION ===");
+            System.out.println("Starting visual simulation with your settings...");
+            System.out.println("The grid window will appear now!");
+
+            // Launch the GUI with user's settings
+            // This runs on a separate thread so the text interface doesn't freeze
+            launchSimulation(disease, settings);
+
+            // ============ RUN AGAIN? ============
+            System.out.print("\nRun another simulation? (yes/no): ");
+            String again = input.nextLine();
+            if (!again.equalsIgnoreCase("yes")) {
+                break; // Exit the while loop
+            }
         }
 
-        /*
-        System.out.println("Simulation ended.");
-        input.close();
-    */
+        // ============ GOODBYE ============
+        System.out.println("Thanks for using Codevid-19 simulation!");
+        input.close(); // Close the scanner (good practice)
     }
 
-    // Helper method to handle percentage input
+    /**
+     * LAUNCH SIMULATION - Starts the GUI in a separate thread
+     * @param disease The disease object with all settings
+     * @param settings The population settings with demographics
+     */
+    public static void launchSimulation(Disease disease, PopulationSettings settings) {
+        // SwingUtilities.invokeLater ensures GUI is created on the right thread
+        // This is standard practice for Swing applications
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                // Create the GUI with the user's settings
+                new ContagionGUI(disease, settings);
+            }
+        });
+    }
+
+    /**
+     * GET PERCENTAGE - Helper method to get percentage input from user
+     * Keeps asking until user enters a valid number between 1-100
+     * @param input The Scanner object
+     * @param message The prompt to show the user
+     * @return The percentage entered, or -1 if user types "quit"
+     */
     public static int getPercentage(Scanner input, String message) {
 
-        // Repeat message until user enters a valid number
+        // Loop until user enters valid input
         while (true) {
             System.out.print(message);
             String userInput = input.nextLine();
 
+            // Check if user wants to quit
             if (userInput.equalsIgnoreCase("quit")) {
-                return -1;
+                return -1; // Signal to quit
             }
 
             try {
+                // Try to convert to integer
                 int percentage = Integer.parseInt(userInput);
 
+                // Check if within valid range
                 if (percentage >= 1 && percentage <= 100) {
-                    return percentage;
+                    return percentage; // Valid input!
                 } else {
                     System.out.println("Please enter a number between 1 and 100.");
                 }
 
             } catch (NumberFormatException e) {
+                // User didn't type a number
                 System.out.println("Invalid input. Please enter a whole number.");
             }
         }
     }
 
-    // Helper method of population size
+    /**
+     * GET POPULATION SIZE - Helper method for population input
+     * @param input The Scanner object
+     * @return Population size (1-1000), or -1 if user types "quit"
+     */
     public static int getPopulationSize(Scanner input) {
 
-        // Repeat until user enters a valid population number
+        // Loop until user enters valid input
         while (true) {
             System.out.print("How big do you want your population to be? (1 - 1000 or type quit to stop): ");
             String userInput = input.nextLine();
 
+            // Check if user wants to quit
             if (userInput.equalsIgnoreCase("quit")) {
                 return -1;
             }
@@ -157,16 +226,17 @@ public class ContagionSimulationMain {
             try {
                 int size = Integer.parseInt(userInput);
 
+                // Check if within valid range
                 if (size >= 1 && size <= 1000) {
-                    return size;
+                    return size; // Valid input!
                 } else {
-                    System.out.println("Please enter a number between 1 and 100000.");
+                    System.out.println("Please enter a number between 1 and 1000.");
                 }
 
             } catch (NumberFormatException e) {
+                // User didn't type a number
                 System.out.println("Invalid input. Please enter a whole number.");
             }
         }
     }
-
 }
