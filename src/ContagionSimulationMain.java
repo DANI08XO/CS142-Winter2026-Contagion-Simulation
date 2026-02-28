@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
  *
  * This is a TEXT-BASED setup wizard that then opens a GRAPHICAL simulation
  */
+
 public class ContagionSimulationMain {
 
     /**

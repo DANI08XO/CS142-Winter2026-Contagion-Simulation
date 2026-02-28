@@ -7,6 +7,7 @@ import java.awt.Graphics;
  * Think of it as the "grandparent" of all objects.
  * Every person in our simulation is an Entity first!
  */
+
 public class Entity {
     // PUBLIC VARIABLES - Making them public makes them easy to access
     public int row;        // Which row in the grid this entity is on (like Y coordinate)
@@ -19,6 +20,7 @@ public class Entity {
      * @param row The starting row position
      * @param col The starting column position
      */
+
     public Entity(int row, int col) {
         this.row = row;           // 'this.row' means the variable above, 'row' is the parameter
         this.col = col;           // Set the column position
