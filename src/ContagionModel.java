@@ -20,24 +20,16 @@ public class ContagionModel {
     }
 
     // Total people in a group
-    public int getGroupCount(int index) {
-        return (int) Math.round(populationSize * groupPercent[index] / 100.0);
-    }
+    public int getGroupCount(int index) { return (int) Math.round(populationSize * groupPercent[index] / 100.0); }
 
     // Male people in a group
-    public int getGroupMaleCount(int index) {
-        return (int) Math.round(getGroupCount(index) * groupMalePercent[index] / 100.0);
-    }
+    public int getGroupMaleCount(int index) { return (int) Math.round(getGroupCount(index) * groupMalePercent[index] / 100.0); }
 
     // Female people in a group
-    public int getGroupFemaleCount(int index) {
-        return getGroupCount(index) - getGroupMaleCount(index);
-    }
+    public int getGroupFemaleCount(int index) { return getGroupCount(index) - getGroupMaleCount(index); }
 
     // Total vaccinated people
-    public int getTotalVaccinated() {
-        return (int) Math.round(populationSize * vaccinatedPercent / 100.0);
-    }
+    public int getTotalVaccinated() { return (int) Math.round(populationSize * vaccinatedPercent / 100.0); }
 
     // Vaccinated per group (proportional to group size)
     public int[] getVaccinatedPerGroup() {
@@ -51,14 +43,10 @@ public class ContagionModel {
     }
 
     // Optional: Vaccinated males per group
-    public int getVaccinatedMales(int index) {
-        return (int) Math.round(getGroupMaleCount(index) / (double) getGroupCount(index) * getVaccinatedPerGroup()[index]);
-    }
+    public int getVaccinatedMales(int index) { return (int) Math.round(getGroupMaleCount(index) / (double) getGroupCount(index) * getVaccinatedPerGroup()[index]);}
 
     // Optional: Vaccinated females per group
-    public int getVaccinatedFemales(int index) {
-        return getVaccinatedPerGroup()[index] - getVaccinatedMales(index);
-    }
+    public int getVaccinatedFemales(int index) { return getVaccinatedPerGroup()[index] - getVaccinatedMales(index); }
 
     // Print all data (for testing)
     public void printPopulationData() {

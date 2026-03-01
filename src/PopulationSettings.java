@@ -96,25 +96,6 @@ public class PopulationSettings {
         this.vaccinatedPercent = percent;
     }
 
-    /* ================== Utility Methods ==================
-
-    // Optional: validate that total percentages <= 100
-    public boolean validatePercentages() {
-        int total = 0;
-        for (int p : groupPercent) total += p;
-        return total <= 100;
-    }
-
-    // Print all group percentages for debugging
-    public void printGroupInfo() {
-        System.out.println("Population size: " + populationSize);
-        for (int i = 0; i < groupNames.length; i++) {
-            System.out.println(groupNames[i] + ": " + groupPercent[i] + "% of population, "
-                    + groupMalePercent[i] + "% males");
-        }
-        System.out.println("Vaccinated population: " + vaccinatedPercent + "%");
-    } */
-
 }
 
 
