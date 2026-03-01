@@ -48,18 +48,4 @@ public class ContagionModel {
     // Optional: Vaccinated females per group
     public int getVaccinatedFemales(int index) { return getVaccinatedPerGroup()[index] - getVaccinatedMales(index); }
 
-    // Print all data (for testing)
-    public void printPopulationData() {
-        int[] vaccinated = getVaccinatedPerGroup();
-        for (int i = 0; i < groupNames.length; i++) {
-            System.out.println(groupNames[i] + ": total=" + getGroupCount(i)
-                    + ", male=" + getGroupMaleCount(i)
-                    + ", female=" + getGroupFemaleCount(i)
-                    + ", vaccinated=" + vaccinated[i]
-                    + ", vaccinated males=" + getVaccinatedMales(i)
-                    + ", vaccinated females=" + getVaccinatedFemales(i));
-        }
-        System.out.println("Total vaccinated: " + getTotalVaccinated());
-    }
-
 }
