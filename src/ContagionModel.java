@@ -3,94 +3,75 @@
 
 public class ContagionModel {
 
+    private final String[] groupNames = {"baby", "child", "teen", "adult", "elder"}; // String array for groups
+
     private int populationSize;
-    private int babyAmount;
-    private int babyMaleAmount;
-    private int childAmount;
-    private int childMaleAmount;
-    private int teenAmount;
-    private int teenMaleAmount;
-    private int adultAmount;
-    private int adultMaleAmount;
-    private int elderAmount;
-    private int elderMaleAmount;
+
+    private int[] groupPercent;      // percent of total population per group
+    private int[] groupMalePercent;  // percent of each group that are male
+    private int vaccinatedPercent;   // percent of total population vaccinated
 
     // Constructor
-    public ContagionModel(PopulationSettings population) {
-
-        populationSize = population.getPopulationSize();
-
-        babyAmount = population.getBabyPercent();
-        babyMaleAmount = population.getBabyMalePercent();
-        childAmount = population.getChildPercent();
-        childMaleAmount = population.getChildMalePercent();
-        teenAmount = population.getTeenPercent();
-        teenMaleAmount = population.getAdultMalePercent();
-        adultAmount = population.getAdultPercent();
-        adultMaleAmount = population.getAdultMalePercent();
-        elderAmount = population.getElderPercent();
-        elderMaleAmount = population.getElderMalePercent();
+    public ContagionModel(int populationSize, int[] groupPercent, int[] groupMalePercent, int vaccinatedPercent) {
+        this.populationSize = populationSize;
+        this.groupPercent = groupPercent;
+        this.groupMalePercent = groupMalePercent;
+        this.vaccinatedPercent = vaccinatedPercent;
     }
 
-    // Math for how many people in the population a certain group (baby, child, teen, adult, elder)
-    private int amountInPopulation(int percent) {
-        return (populationSize * percent) / 100;
+    // Total people in a group
+    public int getGroupCount(int index) {
+        return (int) Math.round(populationSize * groupPercent[index] / 100.0);
     }
 
-
-    // Math for how many people in the group (baby, child, teen, adult, elder) are males
-    // We can find women amount by subtracting number of people in group - males
-    private int malesInGroup(int group, int males) {
-        return (group * males) / 100;
+    // Male people in a group
+    public int getGroupMaleCount(int index) {
+        return (int) Math.round(getGroupCount(index) * groupMalePercent[index] / 100.0);
     }
 
-    // Math for how many people in the population a certain group (baby, child, teen, adult, elder) are baby
-    public int getBabyCount() {
-        return amountInPopulation(babyAmount);
+    // Female people in a group
+    public int getGroupFemaleCount(int index) {
+        return getGroupCount(index) - getGroupMaleCount(index);
     }
 
-    // Math for how many people in the group (baby, child, teen, adult, elder) are baby males
-    public int babyCountMale() {
-        return malesInGroup(getBabyCount(), babyMaleAmount);
+    // Total vaccinated people
+    public int getTotalVaccinated() {
+        return (int) Math.round(populationSize * vaccinatedPercent / 100.0);
     }
-    // Math for how many people in the population a certain group (baby, child, teen, adult, elder) are child
-    public int getChildCount() {
-        return amountInPopulation(childAmount);
+
+    // Vaccinated per group (proportional to group size)
+    public int[] getVaccinatedPerGroup() {
+        int totalVaccinated = getTotalVaccinated();
+        int[] vaccinatedPerGroup = new int[groupNames.length];
+
+        for (int i = 0; i < groupNames.length; i++) {
+            vaccinatedPerGroup[i] = (int) Math.round(getGroupCount(i) / (double) populationSize * totalVaccinated);
+        }
+        return vaccinatedPerGroup;
     }
-    // Math for how many people in the group (baby, child, teen, adult, elder) are child males
-    public int childCountMale() {
-        return malesInGroup(getChildCount(), childMaleAmount);
+
+    // Optional: Vaccinated males per group
+    public int getVaccinatedMales(int index) {
+        return (int) Math.round(getGroupMaleCount(index) / (double) getGroupCount(index) * getVaccinatedPerGroup()[index]);
     }
-    // Math for how many people in the population a certain group (baby, child, teen, adult, elder) are teen
-    public int getTeenCount() {
-        return amountInPopulation(teenAmount);
+
+    // Optional: Vaccinated females per group
+    public int getVaccinatedFemales(int index) {
+        return getVaccinatedPerGroup()[index] - getVaccinatedMales(index);
     }
-    // Math for how many people in the group (baby, child, teen, adult, elder) are teen males
-    public int teenCountMale() {
-        return malesInGroup(getTeenCount(), teenMaleAmount);
+
+    // Print all data (for testing)
+    public void printPopulationData() {
+        int[] vaccinated = getVaccinatedPerGroup();
+        for (int i = 0; i < groupNames.length; i++) {
+            System.out.println(groupNames[i] + ": total=" + getGroupCount(i)
+                    + ", male=" + getGroupMaleCount(i)
+                    + ", female=" + getGroupFemaleCount(i)
+                    + ", vaccinated=" + vaccinated[i]
+                    + ", vaccinated males=" + getVaccinatedMales(i)
+                    + ", vaccinated females=" + getVaccinatedFemales(i));
+        }
+        System.out.println("Total vaccinated: " + getTotalVaccinated());
     }
-    // Math for how many people in the population a certain group (baby, child, teen, adult, elder) are adult
-    public int getAdultCount() {
-        return amountInPopulation(adultAmount);
-    }
-    // Math for how many people in the group (baby, child, teen, adult, elder) are adult males
-    public int adultCountMale() {
-        return malesInGroup(getAdultCount(), adultMaleAmount);
-    }
-    // Math for how many people in the population a certain group (baby, child, teen, adult, elder) are elder.
-    public int getElderCount() {
-        return amountInPopulation(elderAmount);
-    }
-    // Math for how many people in the group (baby, child, teen, adult, elder) are elder males
-    public int elderCountMale() {
-        return malesInGroup(getElderCount(), elderMaleAmount);
-    }
-    // Math for total number of males in the population
-    public int getTotalMaleCount() {
-        return babyCountMale()
-                + childCountMale()
-                + teenCountMale()
-                + adultCountMale()
-                + elderCountMale();
-    }
+
 }
