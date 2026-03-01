@@ -11,6 +11,7 @@ public class Person extends Entity {
     private boolean believer // boolean if person believes in the disease or not;
     private Color color; // Color of person
     private String status; // Status of person (healthy, infected, infected with symptoms, recovered, dead)
+    private boolean Vaccinated;
 
     // Constructor
     public person (int x, int y) {
@@ -36,6 +37,10 @@ public class Person extends Entity {
     }
     public boolean isMale(){
         return male;
+    }
+
+    public boolean isVaccinated() {
+        return Vaccinated;
     }
 /*
     Public Entity(int x, int y)  ; // Constructor

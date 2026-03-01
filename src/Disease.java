@@ -35,10 +35,7 @@ public class Disease {
     }
 
     // Return how contagious
-    public int getContagious() {
-        return contagiousness;
-    }
-
+    public int getContagious() { return contagiousness; }
 
 }
 
