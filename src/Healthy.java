@@ -68,4 +68,4 @@ import java.awt.Graphics;
             // Note: If both Q and V, they'll overlap - that's okay for simplicity
         }
     }
-}
+
