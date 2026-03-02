@@ -7,19 +7,17 @@ public class Person extends Entity {
     private int x; // X position
     private int y; // Y position
     private boolean male; // boolean if male or not
-    private int age // persons age (baby, child, teen, adult, or elder);
-    private boolean believer // boolean if person believes in the disease or not;
+    private int age; // persons age (baby, child, teen, adult, or elder);
+    private boolean believer; // boolean if person believes in the disease or not;
     private Color color; // Color of person
     private String status; // Status of person (healthy, infected, infected with symptoms, recovered, dead)
     private boolean Vaccinated;
 
     // Constructor
-    public person (int x, int y) {
+    public Person (int x, int y) {
         this.x = x;
         this.y = y;
-        color;
-        status;
-        believer;
+
     }
 
     // Return color of person
