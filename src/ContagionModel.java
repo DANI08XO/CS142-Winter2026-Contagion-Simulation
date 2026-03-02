@@ -26,8 +26,8 @@ public class ContagionModel {
         this.populationSize = settings.getPopulationSize();
         this.vaccinatedPercent = settings.getVaccinatedPercent();
 
-        groupCount = new int[groupNames.length];
-        maleCount = new int[groupNames.length];
+        int[] groupCount = new int[groupNames.length];
+        int[] maleCount = new int[groupNames.length];
 
         vaccinatedCount = new int[groupNames.length];
         healthyCount = new int[groupNames.length];
