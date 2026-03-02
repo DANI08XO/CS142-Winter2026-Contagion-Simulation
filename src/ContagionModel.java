@@ -90,11 +90,11 @@ public class ContagionModel {
     // Get index of group
     public int getGroupIndex(String groupName) {
         for (int i = 0; i < groupNames.length; i++) {
-            if (groupNames[i].equalsIgnoreCase(groupName));
-            return i;
-        } else {
-            throw new IllegalArgumentException("Invalid group name");
+            if (groupNames[i].equalsIgnoreCase(groupName)) {  // remove semicolon, add brace
+                return i;
+            }
         }
+        throw new IllegalArgumentException("Invalid group name: " + groupName);  // after loop, no else needed
     }
 
     // Total people in a group
