@@ -1,26 +1,41 @@
 // Person class extends Entity, represents a default person
-
+import java.util.*;
 import java.awt.*;
 
 public class Person extends Entity {
 
-    private int x; // X position
-    private int y; // Y position
-    private boolean male; // boolean if male or not
-    private int age; // persons age (baby, child, teen, adult, or elder);
-    private boolean believer; // boolean if person believes in the disease or not;
-    private Color color; // Color of person
-    private String status; // Status of person (healthy, infected, infected with symptoms, recovered, dead)
-    private boolean Vaccinated;
+    public String sex;          // "MALE" or "FEMALE"
+    public String ageGroup;     // "baby", "child", "teen", "adult", "elder"
+    public String belief;       // "BELIEVER" or "NON-BELIEVER"
+    public String status;       // "healthy", "infected", "recovered", "deceased"
+    public Color color;
+
+    public boolean isVaccinated;
+    public boolean isQuarantined;
+    public int quarantineDaysLeft;
+    public int daysInfected;
+    public boolean hasSymptoms;
+    public Random rand;
 
     // Constructor
-    public Person (int x, int y) {
-        this.x = x;
-        this.y = y;
-
+    public Person(int row, int col, String sex, String ageGroup, String belief) {
+        super(row, col);           // Entity sets this.row, this.col, this.size
+        this.sex = sex;
+        this.ageGroup = ageGroup;
+        this.belief = belief;
+        this.color = Color.WHITE;
+        this.status = "healthy";
+        this.isVaccinated = false;
+        this.isQuarantined = false;
+        this.quarantineDaysLeft = 0;
+        this.daysInfected = 0;
+        this.hasSymptoms = false;
     }
 
-    // Return color of person
+
+
+
+        // Return color of person
     public Color getColor() {
         return color;
     }
@@ -30,16 +45,26 @@ public class Person extends Entity {
         return status;
     }
     public void SetLocation(int newX, int newY){
-        this.x = newX;
-        this.y = newY;
+        this.row = newX;
+        this.col = newY;
     }
     public boolean isMale(){
-        return male;
+        return sex.equals("male");
     }
 
     public boolean isVaccinated() {
-        return Vaccinated;
+        return isVaccinated;
     }
+
+    public void move(int gridRows, int gridCols) {
+        int[] dirs = {-1, 0, 1};
+        row += dirs[(int)(Math.random() * 3)];
+        col += dirs[(int)(Math.random() * 3)];
+        // Clamp to grid
+        row = Math.max(0, Math.min(gridRows - 1, row));
+        col = Math.max(0, Math.min(gridCols - 1, col));
+    }
+
 /*
     Public Entity(int x, int y)  ; // Constructor
     Public void setLocation(int x, int y) //sets the location of the entity
