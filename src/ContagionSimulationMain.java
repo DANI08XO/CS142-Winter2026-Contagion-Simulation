@@ -134,13 +134,14 @@ public class ContagionSimulationMain {
      * @param disease The disease object with all settings
      * @param settings The population settings with demographics
      */
+
     public static void launchSimulation(Disease disease, PopulationSettings settings) {
         // SwingUtilities.invokeLater ensures GUI is created on the right thread
         // This is standard practice for Swing applications
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // Create the GUI with the user's settings
-                new guitest(disease, settings);
+                new ContagionGUI(disease, settings);
             }
         });
     }
