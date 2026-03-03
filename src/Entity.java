@@ -29,6 +29,13 @@ public class Entity {
         this.color = Color.WHITE; // Default color is white (will be changed by subclasses)
     }
 
+    public Entity(){
+        row = 100;
+        col = 100;
+        size = 20;
+        color = Color.white;
+    }
+
     /**
      * DRAW method - How to draw this entity on the screen
      * @param g The Graphics object used for drawing (provided by Java)
