@@ -20,6 +20,12 @@ public class ContagionModel {
 
     private int vaccinatedPercent;   // percent of total population vaccinated
 
+    public int getHealthyCount(int i)    { return healthyCount[i]; }
+    public int getInfectedCount(int i)   { return infectedCount[i]; }
+    public int getRecoveredCount(int i)  { return recoveredCount[i]; }
+    public int getDeceasedCount(int i)   { return deceasedCount[i]; }
+    public int getVaccinatedCount(int i) { return vaccinatedCount[i]; }
+
     // Constructor
     public ContagionModel(PopulationSettings settings) {
 
@@ -127,8 +133,8 @@ public class ContagionModel {
     public int getVaccinatedFemales(int index) { return getVaccinatedPerGroup()[index] - getVaccinatedMales(index); }
 
     // Movement for population
-    public int[] movement() {
+    //public int[] movement() {
 
-    }
+    //  }
 
 }
