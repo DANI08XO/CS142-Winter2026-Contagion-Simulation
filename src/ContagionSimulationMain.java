@@ -98,7 +98,7 @@ public class ContagionSimulationMain {
             settings.setGroupPercent(groupNames.length - 1, elderPercent);
 
             int elderMalePercent = getPercentage(input,
-                    "What percentage of elders would you like to be males? (Elder percentage: " + elderPercent + "%)");
+                    "What percentage of elders would you like to be males? (Elder percentage: " + elderPercent + "%) ");
             if (elderMalePercent == -1) break;
             settings.setGroupMalePercent(groupNames.length - 1, elderMalePercent);
 
@@ -140,7 +140,7 @@ public class ContagionSimulationMain {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // Create the GUI with the user's settings
-                new ContagionGUI(disease, settings);
+                new guitest(disease, settings);
             }
         });
     }
