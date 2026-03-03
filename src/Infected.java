@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.*;
 
 /**
  * INFECTED CLASS - Level 3 of inheritance
@@ -28,6 +29,7 @@ public class Infected extends Person {
         this.hasSymptoms = false;
         // Asymptomatic infected are ORANGE
         this.color = Color.ORANGE;
+        this.rand = new Random();
     }
 
     /**
@@ -35,7 +37,7 @@ public class Infected extends Person {
      * Overrides the Person class method
      * Called each day to update the infection
      */
-    @Override
+    //@Override
     public void updateInfection() {
         // Count another day of being infected
         daysInfected++;
