@@ -132,7 +132,7 @@ public class UserInputGUI extends JFrame {
             }
             settings.setGroupPercent(groupNames.length - 1, elderPercent);
 
-            String elderMaleStr = JOptionPane.showInputDialog(this, "What percentage of elders would you like to be male (percent of elders " + elderPercent +"% )? ");
+            String elderMaleStr = JOptionPane.showInputDialog(this, "What percentage of elders would you like to be male (percent of elders " + elderPercent +"%)? ");
             int elderMalePercent = Integer.parseInt(elderMaleStr);
             settings.setGroupPercent(groupNames.length - 1, elderMalePercent);
 
