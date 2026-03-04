@@ -169,7 +169,7 @@ public class ContagionGUI extends JFrame {
 
     //how diseases spread
     private void spreadDisease() {
-        ArrayList<Person> newlyInfected = new ArrayList<>();
+        ArrayList<Integer> newlyInfected = new ArrayList<>();
 
         //had help from google
         for (Person source : people) {
@@ -190,18 +190,29 @@ public class ContagionGUI extends JFrame {
                 double chance = (disease.getContagious() / 100.0) * beliefModifier;
 
                 if (rand.nextDouble() < chance) {
-                    newlyInfected.add(target);
+                    int idx = people.indexOf(target);
+                    if (idx != -1) {
+                        newlyInfected.add(idx);
+                    }
                 }
             }
         }
 
         //replace Healthy with Infected for newly infected people
-        for (Person p : newlyInfected) {
+       /* for (Person p : newlyInfected) {
             int idx = people.indexOf(p);
             Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
             people.set(idx, newInf);
             model.infectGroup(p.ageGroup, 1);
+        }*/
+
+        for (int idx : newlyInfected) {
+            Person p = people.get(idx);
+            Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
+            people.set(idx, newInf);
+            model.infectGroup(p.ageGroup, 1);
         }
+
     }
 
     //infection day goes up
