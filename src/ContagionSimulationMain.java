@@ -31,7 +31,7 @@ public class ContagionSimulationMain {
         System.out.println("Welcome to Codevid-19 final project for CS 142");
         System.out.println("This program simulates disease spread.");
 
-        // ============ DISEASE NAME ============
+       /* // ============ DISEASE NAME ============
         // User gets to name their disease (fun part!)
         System.out.print("Name of your disease? ");
         String diseaseName = input.nextLine();
@@ -111,11 +111,17 @@ public class ContagionSimulationMain {
             System.out.println("\n=== LAUNCHING SIMULATION ===");
             System.out.println("Starting visual simulation with your settings...");
             System.out.println("The grid window will appear now!");
+*/
+
+            SwingUtilities.invokeLater(() -> {
+                new UserInputGUI().setVisible(true);
+            });
 
             // Launch the GUI with user's settings
             // This runs on a separate thread so the text interface doesn't freeze
-            launchSimulation(disease, settings);
+            // launchSimulation(disease, settings);
 
+        /*
             // ============ RUN AGAIN? ============
             System.out.print("\nRun another simulation? (yes/no): ");
             String again = input.nextLine();
@@ -126,7 +132,7 @@ public class ContagionSimulationMain {
 
         // ============ GOODBYE ============
         System.out.println("Thanks for using Codevid-19 simulation!");
-        input.close(); // Close the scanner (good practice)
+        input.close(); // Close the scanner (good practice) */
     }
 
     /**
