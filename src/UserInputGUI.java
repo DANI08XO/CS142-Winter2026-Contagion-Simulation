@@ -81,7 +81,7 @@ public class UserInputGUI extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // ===== Button =====
-        startButton = new JButton("Start Simulation");
+        startButton = new JButton("Choose Population Demographics");
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(startButton);
 
@@ -119,7 +119,7 @@ public class UserInputGUI extends JFrame {
                 settings.setGroupPercent(i, percent);
                 totalPercent += percent;
 
-                String maleStr = JOptionPane.showInputDialog(this, "What percentage of " + groupNames[i] + " would you like to be males?");
+                String maleStr = JOptionPane.showInputDialog(this, "What percentage of " + groupNames[i] + " (" + percent + "%) would you like to be males?");
                 int malePercent = Integer.parseInt(maleStr);
                 settings.setGroupMalePercent(i, malePercent);
             }

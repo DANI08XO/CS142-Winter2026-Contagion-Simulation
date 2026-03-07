@@ -24,115 +24,14 @@ public class ContagionSimulationMain {
      */
     public static void main(String[] args) {
 
-        // Scanner for reading user input from keyboard
-        Scanner input = new Scanner(System.in);
-
         // ============ INTRODUCTION ============
         System.out.println("Welcome to Codevid-19 final project for CS 142");
         System.out.println("This program simulates disease spread.");
 
-       /* // ============ DISEASE NAME ============
-        // User gets to name their disease (fun part!)
-        System.out.print("Name of your disease? ");
-        String diseaseName = input.nextLine();
-
-        // ============ MAIN LOOP ============
-        // Allows user to run multiple simulations without restarting
-        while (true) {
-
-            // ============ DISEASE PROPERTIES ============
-            // Get how deadly the disease is (1-100%)
-            int deadly = getPercentage(input,
-                    "How deadly do you want " + diseaseName + "? (1 - 100 or type quit to stop): ");
-
-            if (deadly == -1) break; // User typed "quit"
-
-            // Get how contagious the disease is (1-100%)
-            int contagious = getPercentage(input,
-                    "How contagious do you want " + diseaseName + "? (1 - 100 or type quit to stop): ");
-
-            if (contagious == -1) break; // User typed "quit"
-
-            // Show disease stats to user
-            System.out.println("\nDisease created:");
-            System.out.println("Name: " + diseaseName);
-            System.out.println("Deadliness: " + deadly + "%");
-            System.out.println("Contagiousness: " + contagious + "%");
-
-            // Create a Disease object to store these values
-            Disease disease = new Disease(diseaseName, deadly, contagious);
-
-            // ============ POPULATION SIZE ============
-            int populationSize = getPopulationSize(input);
-            if (populationSize == -1) break; // User typed "quit"
-            System.out.println("Population size: " + populationSize);
-
-            // Create a PopulationSettings object to store demographics
-            PopulationSettings settings = new PopulationSettings(populationSize);
-
-            // ============ DEMOGRAPHICS ============
-            System.out.println("\nNow let's set up the population demographics:");
-            System.out.println("(Percentages should add up to 100%)");
-
-            String[] groupNames = settings.getGroupNames();
-            int totalPercent = 0;
-
-            // Loop through all groups except "elder"
-            for (int i = 0; i < groupNames.length - 1; i++) { // exclude elder
-                int percent = getPercentage(input, "What percentage of your population would you like to be " + groupNames[i] + "? ");
-                if (percent == -1) break;
-                settings.setGroupPercent(i, percent);
-                totalPercent += percent;
-
-                int malePercent = getPercentage(input, "What percentage of " + groupNames[i] + " would you like to be males? ");
-                if (malePercent == -1) break;
-                settings.setGroupMalePercent(i, malePercent);
-            }
-
-            // Calculate elder percentage
-            int elderPercent = 100 - totalPercent;
-            if (elderPercent < 0) {
-                System.out.println("ERROR: Percentages exceed 100%. Please run again.");
-                break;
-            }
-            settings.setGroupPercent(groupNames.length - 1, elderPercent);
-
-            int elderMalePercent = getPercentage(input,
-                    "What percentage of elders would you like to be males? (Elder percentage: " + elderPercent + "%) ");
-            if (elderMalePercent == -1) break;
-            settings.setGroupMalePercent(groupNames.length - 1, elderMalePercent);
-
-            // ============ VACCINATION ============
-            int vaccinated = getPercentage(input, "What percentage of the population is vaccinated? ");
-            if (vaccinated == -1) break;
-            settings.setVaccinatedPercent(vaccinated);
-
-            // ============ LAUNCH SIMULATION ============
-            System.out.println("\n=== LAUNCHING SIMULATION ===");
-            System.out.println("Starting visual simulation with your settings...");
-            System.out.println("The grid window will appear now!");
-*/
-
-            SwingUtilities.invokeLater(() -> {
-                new UserInputGUI().setVisible(true);
-            });
-
-            // Launch the GUI with user's settings
-            // This runs on a separate thread so the text interface doesn't freeze
-            // launchSimulation(disease, settings);
-
-        /*
-            // ============ RUN AGAIN? ============
-            System.out.print("\nRun another simulation? (yes/no): ");
-            String again = input.nextLine();
-            if (!again.equalsIgnoreCase("yes")) {
-                break; // Exit the while loop
-            }
-        }
-
-        // ============ GOODBYE ============
-        System.out.println("Thanks for using Codevid-19 simulation!");
-        input.close(); // Close the scanner (good practice) */
+        // launch user input GUI
+        SwingUtilities.invokeLater(() -> {
+            new UserInputGUI().setVisible(true);
+        });
     }
 
     /**
@@ -140,6 +39,7 @@ public class ContagionSimulationMain {
      * @param disease The disease object with all settings
      * @param settings The population settings with demographics
      */
+
 
     public static void launchSimulation(Disease disease, PopulationSettings settings) {
         // SwingUtilities.invokeLater ensures GUI is created on the right thread
@@ -159,6 +59,7 @@ public class ContagionSimulationMain {
      * @param message The prompt to show the user
      * @return The percentage entered, or -1 if user types "quit"
      */
+    /*
     public static int getPercentage(Scanner input, String message) {
 
         // Loop until user enters valid input
@@ -194,6 +95,7 @@ public class ContagionSimulationMain {
      * @param input The Scanner object
      * @return Population size (1-1000), or -1 if user types "quit"
      */
+    /*
     public static int getPopulationSize(Scanner input) {
 
         // Loop until user enters valid input
@@ -222,4 +124,5 @@ public class ContagionSimulationMain {
             }
         }
     }
+    */
 }
