@@ -45,7 +45,7 @@ public class ContagionGUI extends JFrame {
         //grid panel
         simPanel = new SimPanel();
         simPanel.setPreferredSize(new Dimension(GRID_COLS * CELL_SIZE, GRID_ROWS * CELL_SIZE));
-        simPanel.setBackground(new Color(20, 20, 20));
+        simPanel.setBackground(new Color(34, 139, 34));
         add(simPanel, BorderLayout.CENTER);
 
         //stats panel
