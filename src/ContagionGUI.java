@@ -5,33 +5,37 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+//Contagion GUI class, extends JFrame
 public class ContagionGUI extends JFrame {
-    private static final int CELL_SIZE = 20;
-    private static final int GRID_COLS = 40;
-    private static final int GRID_ROWS = 30;
-    private static final String[] GROUP_NAMES = {"baby", "child", "teen", "adult", "elder"};
-    private static final Color COLOR_HEALTHY   = Color.YELLOW;
-    private static final Color COLOR_INFECTED  = Color.ORANGE;
-    private static final Color COLOR_SYMPTOMATIC = Color.RED;
-    private static final Color COLOR_RECOVERED = Color.BLUE;
-    private static final Color COLOR_DECEASED  = Color.BLACK;
-    private static final Color COLOR_VACCINATED = new Color(0, 180, 180);
-    private final Disease disease;
-    private final PopulationSettings settings;
-    private ContagionModel model;
-    private ArrayList<Person> people;
-    private final Timer animTimer;
-    private boolean animating = false;
-    private int tickCount = 0;
-    private final Random rand = new Random();
-    private final SimPanel simPanel;
-    private JButton animateBtn;
-    private JSlider speedSlider;
-    private JLabel tickLabel;
-    private JLabel[] groupLabels;  // one per age group
-    private JLabel totalLabel;
+    //all the variables for the class
+    private static final int CELL_SIZE = 20; //this is the size of one cell (square) (in this case 20x20)
+    private static final int GRID_COLS = 40; //number of columns
+    private static final int GRID_ROWS = 30; //number of rows
+    private static final String[] GROUP_NAMES = {"baby", "child", "teen", "adult", "elder"}; //list of strings of all ages
+    private static final Color COLOR_HEALTHY   = Color.YELLOW; //yellow is the color of someone who's healthy
+    private static final Color COLOR_INFECTED  = Color.ORANGE; //orange for infected
+    private static final Color COLOR_SYMPTOMATIC = Color.RED; //red for symptoms
+    private static final Color COLOR_RECOVERED = Color.BLUE; //blue for a recoveree
+    private static final Color COLOR_DECEASED  = Color.BLACK; //black for deceased
+    private static final Color COLOR_VACCINATED = new Color(0, 180, 180); //cyan for vaccinated
+    private final Disease disease; //from Disease class
+    private final PopulationSettings settings; //from PopulationSettings class
+    private ContagionModel model; //from ContagionModel class
+    private ArrayList<Person> people; //array list of all the people
+    private final Timer animTimer; //timer
+    private boolean animating = false; //initially set to false, if user wants to animate they can
+    private int tickCount = 0; //initial tick count is 0
+    private final Random rand = new Random(); //random
+    private final SimPanel simPanel; //simpanel
+    private JButton animateBtn; //button
+    private JSlider speedSlider; //slider
+    private JLabel tickLabel; //label for the ticks
+    private JLabel[] groupLabels;  //labels: one per age group
+    private JLabel totalLabel; //label for the total
 
 
+    //constructor: names the disease parameter as the title, sets the background, grid panel,
+    //timer, and all the panels, and sets all the people onto the grid
     public ContagionGUI(Disease disease, PopulationSettings settings) {
         super("Codevid-19: " + disease.getName() + " Simulation");
 
@@ -69,7 +73,8 @@ public class ContagionGUI extends JFrame {
         setVisible(true);
     }
 
-
+// method that sets all the people up, sets up all the ages, statuses, gender,
+// and randomly picks one person as patient zero
     private void initPeople() {
         people = new ArrayList<>();
 
@@ -128,15 +133,19 @@ public class ContagionGUI extends JFrame {
         return new int[]{row, col};
     }
 
+    //uses the percentage of males to fill out randomly which people are male
     private String randSex(int groupIndex) {
         int malePct = settings.getGroupMalePercent(groupIndex);
         return rand.nextInt(100) < malePct ? "MALE" : "FEMALE";
     }
 
+    //uses the percentage of males to fill out randomly which people are believers
     private String randBelief() {
         return rand.nextBoolean() ? "BELIEVER" : "NON-BELIEVER";
     }
 
+    //one tick of the simulation, moves all the people, spreads the disease, progresses infections,
+    //and stops the simulation if there are no more infected people left
     private void doTick() {
         movePeople();
         spreadDisease();
@@ -155,7 +164,7 @@ public class ContagionGUI extends JFrame {
         }
     }
 
-    //move one cell
+    //move one cell in a random direction unless they are dead or quarantined
     private void movePeople() {
         for (Person p : people) {
             if (p instanceof Deceased) continue; // dead don't move
@@ -167,9 +176,10 @@ public class ContagionGUI extends JFrame {
         }
     }
 
-    //how diseases spread
+    //how diseases spread, if there is a person nearby, use the contagious percentage as a chance
+    //to infect the nearby person, believers are careful and are less likely to get infected
     private void spreadDisease() {
-        ArrayList<Integer> newlyInfected = new ArrayList<>();
+        ArrayList<Person> newlyInfected = new ArrayList<>();
 
         //had help from google
         for (Person source : people) {
@@ -190,32 +200,22 @@ public class ContagionGUI extends JFrame {
                 double chance = (disease.getContagious() / 100.0) * beliefModifier;
 
                 if (rand.nextDouble() < chance) {
-                    int idx = people.indexOf(target);
-                    if (idx != -1) {
-                        newlyInfected.add(idx);
-                    }
+                    newlyInfected.add(target);
                 }
             }
         }
 
         //replace Healthy with Infected for newly infected people
-       /* for (Person p : newlyInfected) {
+        for (Person p : newlyInfected) {
             int idx = people.indexOf(p);
             Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
             people.set(idx, newInf);
             model.infectGroup(p.ageGroup, 1);
-        }*/
-
-        for (int idx : newlyInfected) {
-            Person p = people.get(idx);
-            Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
-            people.set(idx, newInf);
-            model.infectGroup(p.ageGroup, 1);
         }
-
     }
 
-    //infection day goes up
+    //infection day goes up, if 2 weeks pass, resolve what happens to the infected,
+    //uses arraylists to replace people in case they die or heal
     private void progressInfections() {
         ArrayList<Integer> toReplace = new ArrayList<>();
         ArrayList<Person> replacements = new ArrayList<>();
@@ -262,6 +262,7 @@ public class ContagionGUI extends JFrame {
         };
     }
 
+    //everything after this point is purely GUI stuff and I had had help from google with
 //buttons
 
     private void toggleAnimation() {

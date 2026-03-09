@@ -20,6 +20,7 @@ public class ContagionModel {
 
     private int vaccinatedPercent;   // percent of total population vaccinated
 
+    //methods that return the number of that kind of people (e.g. getHealthyCount returns number of health people)
     public int getHealthyCount(int i)    { return healthyCount[i]; }
     public int getInfectedCount(int i)   { return infectedCount[i]; }
     public int getRecoveredCount(int i)  { return recoveredCount[i]; }
@@ -29,9 +30,11 @@ public class ContagionModel {
     // Constructor
     public ContagionModel(PopulationSettings settings) {
 
+        //uses the population settings and takes the size and vaccinated percentage
         this.populationSize = settings.getPopulationSize();
         this.vaccinatedPercent = settings.getVaccinatedPercent();
 
+        //creating lists of the all the ages (length 5 in this case)
         int[] groupCount = new int[groupNames.length];
         int[] maleCount = new int[groupNames.length];
 
@@ -42,13 +45,14 @@ public class ContagionModel {
         recoveredCount = new int[groupNames.length];
 
         for (int i = 0; i < groupNames.length; i++) {
-
+            
+            //gets the amount of males and age groups based on the percentages and population size given
             groupCount[i] = (int) Math.round(populationSize * settings.getGroupPercent(i) / 100.0); // How many people in group
             maleCount[i] = (int) Math.round(groupCount[i] * settings.getGroupMalePercent(i) / 100.0); // How many males in group
-
+            //same thing for vaccinated people
             vaccinatedCount[i] = (int) Math.round(groupCount[i] * vaccinatedPercent / 100.0);
-
-            healthyCount[i] = groupCount[i] - vaccinatedCount[i]; //count healthy = group count - vaccinated already
+            //healthy non-vaccinated people: total amount of people minus vaccinated already
+            healthyCount[i] = groupCount[i] - vaccinatedCount[i];
 
             infectedCount[i] = 0; // Start infected at 0
             deceasedCount[i] = 0; // Start deceased at 0
@@ -57,7 +61,7 @@ public class ContagionModel {
 
     }
 
-    // Method to infect a group
+    // Method to infect a group, updates the amount of infected people
     public void infectGroup (String groupName, int numInfected) {
 
         int index = getGroupIndex(groupName);
@@ -69,7 +73,7 @@ public class ContagionModel {
 
     }
 
-    // Method to recover group
+    // Method to recover group, updates the amount of recovered people
     public void recoveredGroup (String groupName, int numRecovered) {
 
         int index = getGroupIndex(groupName);
@@ -81,7 +85,7 @@ public class ContagionModel {
 
     }
 
-    //Method for death in group
+    //Method for death in group, updates the number of deceased people
     public void deceasedGroup (String groupName, int numDeceased) {
 
         int index = getGroupIndex(groupName);
@@ -93,7 +97,7 @@ public class ContagionModel {
 
     }
 
-    // Get index of group
+    // Get index of group in the groupNames list
     public int getGroupIndex(String groupName) {
         for (int i = 0; i < groupNames.length; i++) {
             if (groupNames[i].equalsIgnoreCase(groupName)) {  // remove semicolon, add brace
