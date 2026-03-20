@@ -1,39 +1,86 @@
+
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.*; // Added for save/load functionality
 
-//Contagion GUI class, extends JFrame
+/**
+ * ContagionGUI class - The main visual window for the disease simulation.
+ * This class creates the grid display, handles user interactions through buttons,
+ * and manages the animation timer that drives the simulation forward.
+ * It extends JFrame to create a standalone window with controls and statistics.
+ *
+ * @author Codevid-19 Team
+ * @version 1.0
+ */
 public class ContagionGUI extends JFrame {
     //all the variables for the class
+    /** Size of one grid cell in pixels (20x20) */
     private static final int CELL_SIZE = 20; //this is the size of one cell (square) (in this case 20x20)
+    /** Number of columns in the grid */
     private static final int GRID_COLS = 40; //number of columns
+    /** Number of rows in the grid */
     private static final int GRID_ROWS = 30; //number of rows
+    /** Array of all age group names */
     private static final String[] GROUP_NAMES = {"baby", "child", "teen", "adult", "elder"}; //list of strings of all ages
+    /** Color for healthy individuals (YELLOW) */
     private static final Color COLOR_HEALTHY   = Color.YELLOW; //yellow is the color of someone who's healthy
+    /** Color for asymptomatic infected individuals (ORANGE) */
     private static final Color COLOR_INFECTED  = Color.ORANGE; //orange for infected
+    /** Color for symptomatic infected individuals (RED) */
     private static final Color COLOR_SYMPTOMATIC = Color.RED; //red for symptoms
+    /** Color for recovered individuals (BLUE) */
     private static final Color COLOR_RECOVERED = Color.BLUE; //blue for a recoveree
+    /** Color for deceased individuals (BLACK) */
     private static final Color COLOR_DECEASED  = Color.BLACK; //black for deceased
+    /** Color for vaccinated individuals (CYAN) */
     private static final Color COLOR_VACCINATED = new Color(0, 180, 180); //cyan for vaccinated
+
+    /** The disease being simulated */
     private final Disease disease; //from Disease class
+    /** Population settings including demographics */
     private final PopulationSettings settings; //from PopulationSettings class
+    /** The simulation model that tracks statistics */
     private ContagionModel model; //from ContagionModel class
+    /** List of all Person objects in the simulation */
     private ArrayList<Person> people; //array list of all the people
+    /** Timer that drives the animation ticks */
     private final Timer animTimer; //timer
+    /** Flag indicating whether animation is currently running */
     private boolean animating = false; //initially set to false, if user wants to animate they can
+    /** Current tick/day counter */
     private int tickCount = 0; //initial tick count is 0
+    /** Random number generator for various chance calculations */
     private final Random rand = new Random(); //random
+    /** The panel where the grid is drawn */
     private final SimPanel simPanel; //simpanel
+    /** Button to start/stop animation */
     private JButton animateBtn; //button
+    /** Slider to control animation speed */
     private JSlider speedSlider; //slider
+    /** Label showing current tick count */
     private JLabel tickLabel; //label for the ticks
+    /** Array of labels for each age group's statistics */
     private JLabel[] groupLabels;  //labels: one per age group
+    /** Label showing total population statistics */
     private JLabel totalLabel; //label for the total
+    /** Button to save current simulation state */
+    private JButton saveButton; // Added for save functionality
+    /** Button to load a previously saved simulation */
+    private JButton loadButton; // Added for load functionality
 
 
+    /**
+     * Constructor - Creates the main simulation window.
+     * Initializes all GUI components, sets up the timer, and creates the initial population.
+     *
+     * @param disease The disease object containing name and properties
+     * @param settings The population settings with demographics
+     */
     //constructor: names the disease parameter as the title, sets the background, grid panel,
     //timer, and all the panels, and sets all the people onto the grid
     public ContagionGUI(Disease disease, PopulationSettings settings) {
@@ -73,8 +120,13 @@ public class ContagionGUI extends JFrame {
         setVisible(true);
     }
 
-// method that sets all the people up, sets up all the ages, statuses, gender,
-// and randomly picks one person as patient zero
+    /**
+     * Initializes the population by creating all Person objects based on settings.
+     * Creates healthy and vaccinated individuals for each age group,
+     * then selects one random adult to be Patient Zero (first infected).
+     */
+    // method that sets all the people up, sets up all the ages, statuses, gender,
+    // and randomly picks one person as patient zero
     private void initPeople() {
         people = new ArrayList<>();
 
@@ -117,6 +169,11 @@ public class ContagionGUI extends JFrame {
         updateStats();
     }
 
+    /**
+     * Finds a random empty cell on the grid that is not already occupied.
+     *
+     * @return int array of length 2 containing [row, col] of empty cell
+     */
     //returns a random unoccupied cell on the grid
     private int[] randomEmptyCell() {
         boolean[][] occupied = new boolean[GRID_ROWS][GRID_COLS];
@@ -133,17 +190,33 @@ public class ContagionGUI extends JFrame {
         return new int[]{row, col};
     }
 
+    /**
+     * Randomly determines sex based on male percentage for the given age group.
+     *
+     * @param groupIndex Index of the age group
+     * @return "MALE" or "FEMALE"
+     */
     //uses the percentage of males to fill out randomly which people are male
     private String randSex(int groupIndex) {
         int malePct = settings.getGroupMalePercent(groupIndex);
         return rand.nextInt(100) < malePct ? "MALE" : "FEMALE";
     }
 
+    /**
+     * Randomly determines belief status (50/50 chance).
+     *
+     * @return "BELIEVER" or "NON-BELIEVER"
+     */
     //uses the percentage of males to fill out randomly which people are believers
     private String randBelief() {
         return rand.nextBoolean() ? "BELIEVER" : "NON-BELIEVER";
     }
 
+    /**
+     * Executes one tick/day of the simulation.
+     * Moves all people, spreads disease, progresses infections,
+     * updates display, and checks if simulation should end.
+     */
     //one tick of the simulation, moves all the people, spreads the disease, progresses infections,
     //and stops the simulation if there are no more infected people left
     private void doTick() {
@@ -164,6 +237,10 @@ public class ContagionGUI extends JFrame {
         }
     }
 
+    /**
+     * Moves all living, non-quarantined people to adjacent cells.
+     * Deceased people do not move.
+     */
     //move one cell in a random direction unless they are dead or quarantined
     private void movePeople() {
         for (Person p : people) {
@@ -176,6 +253,11 @@ public class ContagionGUI extends JFrame {
         }
     }
 
+    /**
+     * Handles disease transmission between infected and healthy individuals.
+     * Checks for adjacent infected and healthy pairs, calculates infection chance
+     * based on disease contagiousness and belief status, and creates new infections.
+     */
     //how diseases spread, if there is a person nearby, use the contagious percentage as a chance
     //to infect the nearby person, believers are careful and are less likely to get infected
     private void spreadDisease() {
@@ -208,16 +290,17 @@ public class ContagionGUI extends JFrame {
         //replace Healthy with Infected for newly infected people
         for (Person p : newlyInfected) {
             int idx = people.indexOf(p);
-            if (idx != -1) {
-                Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
-                people.set(idx, newInf);
-                model.infectGroup(p.ageGroup, 1);
-            } else {
-                continue;
-            }
+            Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
+            people.set(idx, newInf);
+            model.infectGroup(p.ageGroup, 1);
         }
     }
 
+    /**
+     * Updates the status of all infected individuals.
+     * Increases days infected, checks for symptom development,
+     * and after 14 days determines if they recover or die based on age and disease deadliness.
+     */
     //infection day goes up, if 2 weeks pass, resolve what happens to the infected,
     //uses arraylists to replace people in case they die or heal
     private void progressInfections() {
@@ -254,6 +337,13 @@ public class ContagionGUI extends JFrame {
         }
     }
 
+    /**
+     * Returns a death risk multiplier based on age group.
+     * Elders and babies have higher risk, children and teens have lower risk.
+     *
+     * @param ageGroup The age group as a string
+     * @return Multiplier for death chance
+     */
     //old people and babies are more likely to die
     private double getAgeDeathModifier(String ageGroup) {
         return switch (ageGroup.toLowerCase()) {
@@ -266,9 +356,133 @@ public class ContagionGUI extends JFrame {
         };
     }
 
+    /**
+     * Saves the current simulation state to a text file.
+     * Includes disease parameters, tick count, and every person's current status.
+     */
+    // Added save functionality
+    private void saveSimulation() {
+        try {
+            String filename = JOptionPane.showInputDialog(this,
+                    "Enter filename to save simulation:");
+            if (filename == null || filename.trim().isEmpty()) return;
+
+            PrintWriter writer = new PrintWriter(new FileWriter(filename));
+
+            // Save disease info
+            writer.println("DISEASE_NAME=" + disease.getName());
+            writer.println("DEADLINESS=" + disease.getDeadly());
+            writer.println("CONTAGIOUS=" + disease.getContagious());
+            writer.println("TICK=" + tickCount);
+
+            // Save each person
+            for (Person p : people) {
+                String status = "HEALTHY";
+                if (p instanceof Infected) status = "INFECTED";
+                else if (p instanceof Recovered) status = "RECOVERED";
+                else if (p instanceof Deceased) status = "DECEASED";
+
+                writer.println(p.row + "," + p.col + "," +
+                        p.sex + "," +
+                        p.ageGroup + "," +
+                        p.belief + "," +
+                        status + "," +
+                        p.daysInfected + "," +
+                        p.isVaccinated + "," +
+                        p.isQuarantined);
+            }
+
+            writer.close();
+            JOptionPane.showMessageDialog(this, "Simulation saved to " + filename);
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error saving: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Loads a previously saved simulation state from a text file.
+     * Restores all disease parameters and recreates every person with their saved status.
+     */
+    // Added load functionality
+    private void loadSimulation() {
+        try {
+            String filename = JOptionPane.showInputDialog(this,
+                    "Enter filename to load simulation:");
+            if (filename == null || filename.trim().isEmpty()) return;
+
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            ArrayList<Person> newPeople = new ArrayList<>();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("DISEASE_NAME=")) {
+                    // Skip disease info - already have it
+                    continue;
+                } else if (line.startsWith("DEADLINESS=")) {
+                    continue;
+                } else if (line.startsWith("CONTAGIOUS=")) {
+                    continue;
+                } else if (line.startsWith("TICK=")) {
+                    tickCount = Integer.parseInt(line.split("=")[1]);
+                } else {
+                    // This is a person line
+                    String[] parts = line.split(",");
+                    if (parts.length >= 9) {
+                        int row = Integer.parseInt(parts[0]);
+                        int col = Integer.parseInt(parts[1]);
+                        String sex = parts[2];
+                        String ageGroup = parts[3];
+                        String belief = parts[4];
+                        String status = parts[5];
+                        int daysInfected = Integer.parseInt(parts[6]);
+                        boolean vaccinated = Boolean.parseBoolean(parts[7]);
+                        boolean quarantined = Boolean.parseBoolean(parts[8]);
+
+                        Person p;
+                        switch (status) {
+                            case "HEALTHY":
+                                p = new Healthy(row, col, sex, ageGroup, belief);
+                                if (vaccinated) ((Healthy)p).getVaccinated();
+                                break;
+                            case "INFECTED":
+                                p = new Infected(row, col, sex, ageGroup, belief);
+                                ((Infected)p).daysInfected = daysInfected;
+                                break;
+                            case "RECOVERED":
+                                p = new Recovered(row, col, sex, ageGroup, belief);
+                                break;
+                            case "DECEASED":
+                                p = new Deceased(row, col, sex, ageGroup, belief);
+                                break;
+                            default:
+                                p = new Healthy(row, col, sex, ageGroup, belief);
+                        }
+
+                        p.isQuarantined = quarantined;
+                        newPeople.add(p);
+                    }
+                }
+            }
+
+            reader.close();
+            people = newPeople;
+            simPanel.repaint();
+            updateStats();
+            JOptionPane.showMessageDialog(this, "Simulation loaded from " + filename);
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error loading: " + e.getMessage());
+        }
+    }
+
     //everything after this point is purely GUI stuff and I had had help from google with
 //buttons
 
+    /**
+     * Toggles the animation on/off.
+     * Starts or stops the timer and updates button text accordingly.
+     */
     private void toggleAnimation() {
         if (animating) {
             animTimer.stop();
@@ -280,6 +494,10 @@ public class ContagionGUI extends JFrame {
         animating = !animating;
     }
 
+    /**
+     * Resets the simulation to its initial state.
+     * Stops animation, resets tick counter, recreates the model and population.
+     */
     private void resetSim() {
         if (animating) toggleAnimation();
         tickCount = 0;
@@ -289,8 +507,10 @@ public class ContagionGUI extends JFrame {
         updateStats();
     }
 
+    /**
+     * Updates all statistics displays including group labels and total label.
+     */
     //stats: had help from google
-
     private void updateStats() {
         tickLabel.setText("  Tick: " + tickCount + "  ");
 
@@ -320,6 +540,12 @@ public class ContagionGUI extends JFrame {
         ));
     }
 
+    /**
+     * Counts the number of people with a given status.
+     *
+     * @param status The status to count ("healthy", "infected", "recovered", "deceased")
+     * @return The count of people with that status
+     */
     private int countByStatus(String status) {
         int count = 0;
         for (Person p : people) {
@@ -335,6 +561,12 @@ public class ContagionGUI extends JFrame {
 
 //ui
 
+    /**
+     * Builds the information bar at the top of the window.
+     * Displays disease name, deadliness, contagiousness, and current tick.
+     *
+     * @return JPanel containing the info bar
+     */
     private JPanel buildInfoBar() {
         JPanel bar = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
         bar.setBackground(new Color(20, 20, 60));
@@ -365,6 +597,12 @@ public class ContagionGUI extends JFrame {
         return bar;
     }
 
+    /**
+     * Builds the statistics panel on the right side.
+     * Shows counts for each age group and includes the legend.
+     *
+     * @return JPanel containing statistics display
+     */
     //had a little help from google
     private JPanel buildStatsPanel() {
         JPanel panel = new JPanel();
@@ -396,6 +634,11 @@ public class ContagionGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Builds the legend panel explaining what each color represents.
+     *
+     * @return JPanel containing the legend
+     */
     private JPanel buildLegend() {//had a little help from google
         JPanel legend = new JPanel();
         legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
@@ -421,6 +664,13 @@ public class ContagionGUI extends JFrame {
         return legend;
     }
 
+    /**
+     * Helper method to add a row to the legend panel.
+     *
+     * @param panel The legend panel to add to
+     * @param color The color to display
+     * @param label The text label
+     */
     private void addLegendRow(JPanel panel, Color color, String label) {
         JLabel lbl = new JLabel("  ■ " + label);
         lbl.setForeground(color.equals(Color.BLACK) ? Color.GRAY : color);
@@ -428,6 +678,11 @@ public class ContagionGUI extends JFrame {
         panel.add(lbl);
     }
 
+    /**
+     * Builds the control panel at the bottom with all buttons and slider.
+     *
+     * @return JPanel containing all controls
+     */
     private JPanel buildControlPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 8));
         panel.setBackground(new Color(40, 40, 40));
@@ -446,15 +701,23 @@ public class ContagionGUI extends JFrame {
         JButton resetBtn = new JButton("↺  Reset");
         JButton quitBtn = new JButton("✕  Quit");
 
+        // Added save and load buttons
+        saveButton = new JButton("💾 Save");
+        loadButton = new JButton("📂 Load");
+
         styleButton(animateBtn, new Color(50, 140, 50));
         styleButton(tickBtn,    new Color(50, 90,  170));
         styleButton(resetBtn,   new Color(160, 110, 20));
         styleButton(quitBtn,    new Color(160, 40,  40));
+        styleButton(saveButton, new Color(100, 100, 150)); // Style for save button
+        styleButton(loadButton, new Color(100, 100, 150)); // Style for load button
 
         animateBtn.addActionListener(e -> toggleAnimation());
         tickBtn.addActionListener(e -> doTick());
         resetBtn.addActionListener(e -> resetSim());
         quitBtn.addActionListener(e -> System.exit(0));
+        saveButton.addActionListener(e -> saveSimulation()); // Add save action
+        loadButton.addActionListener(e -> loadSimulation()); // Add load action
 
         JLabel slowLbl = new JLabel("Slow");
         JLabel fastLbl = new JLabel("Fast");
@@ -473,6 +736,8 @@ public class ContagionGUI extends JFrame {
         panel.add(tickBtn);
         panel.add(resetBtn);
         panel.add(quitBtn);
+        panel.add(saveButton); // Add save button to panel
+        panel.add(loadButton); // Add load button to panel
         panel.add(Box.createHorizontalStrut(15));
         panel.add(slowLbl);
         panel.add(speedSlider);
@@ -485,6 +750,12 @@ public class ContagionGUI extends JFrame {
         return wrapper;
     }
 
+    /**
+     * Applies consistent styling to buttons.
+     *
+     * @param btn The button to style
+     * @param bg The background color for the button
+     */
     private void styleButton(JButton btn, Color bg) {
         btn.setBackground(bg);
         btn.setForeground(Color.WHITE);
@@ -496,7 +767,16 @@ public class ContagionGUI extends JFrame {
 
 //had a pretty good amount of help from google
 
+    /**
+     * Inner class representing the panel where the simulation grid is drawn.
+     * Handles rendering all Person objects on the grid.
+     */
     class SimPanel extends JPanel {
+        /**
+         * Paints the grid and all people on it.
+         *
+         * @param g The Graphics object to draw with
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
