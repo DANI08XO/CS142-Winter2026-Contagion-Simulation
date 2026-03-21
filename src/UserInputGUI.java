@@ -149,7 +149,7 @@ public class UserInputGUI extends JFrame {
         saveLoadPanel.setMaximumSize(new Dimension(400, 40));
 
         // Save Button
-        saveButton = new JButton("💾 Save Parameters");
+        saveButton = new JButton(" Save Parameters");
         saveButton.setFont(new Font("SansSerif", Font.BOLD, 12));
         saveButton.setBackground(new Color(100, 100, 150));
         saveButton.setForeground(Color.WHITE);
@@ -158,7 +158,7 @@ public class UserInputGUI extends JFrame {
         saveLoadPanel.add(saveButton);
 
         // Load Button
-        loadButton = new JButton("📂 Load Parameters");
+        loadButton = new JButton("Load Parameters");
         loadButton.setFont(new Font("SansSerif", Font.BOLD, 12));
         loadButton.setBackground(new Color(100, 100, 150));
         loadButton.setForeground(Color.WHITE);
