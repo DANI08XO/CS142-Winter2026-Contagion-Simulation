@@ -409,30 +409,46 @@ public class ContagionGUI extends JFrame {
     private void updateStats() {
         tickLabel.setText("  Tick: " + tickCount + "  ");
 
+        int totalHealthy = 0;
+        int totalInfected = 0;
+        int totalRecovered = 0;
+        int totalDeceased = 0;
+        int totalVaccinated = 0;
+
         for (int i = 0; i < GROUP_NAMES.length; i++) {
+            int healthy = model.getHealthyCount(i);  // Non-vaccinated healthy
+            int infected = model.getInfectedCount(i);
+            int recovered = model.getRecoveredCount(i);
+            int deceased = model.getDeceasedCount(i);
+            int vaccinated = model.getVaccinatedCount(i);
+
+            totalHealthy += healthy;
+            totalInfected += infected;
+            totalRecovered += recovered;
+            totalDeceased += deceased;
+            totalVaccinated += vaccinated;
+
             groupLabels[i].setText(String.format(
                     "<html><b>%s</b>: H%d I%d R%d D%d V%d</html>",
                     GROUP_NAMES[i].toUpperCase(),
-                    model.getHealthyCount(i),
-                    model.getInfectedCount(i),
-                    model.getRecoveredCount(i),
-                    model.getDeceasedCount(i),
-                    model.getVaccinatedCount(i)
+                    healthy, infected, recovered, deceased, vaccinated
             ));
         }
 
-        int h = countByStatus("healthy");
-        int inf = countByStatus("infected");
-        int r = countByStatus("recovered");
-        int d = countByStatus("deceased");
+        // Total population = all groups added
+        int totalPopulation = totalHealthy + totalInfected + totalRecovered + totalDeceased + totalVaccinated;
 
         totalLabel.setText(String.format(
                 "<html>TOTAL — Healthy: <font color='yellow'>%d</font>  " +
                         "Infected: <font color='orange'>%d</font>  " +
                         "Recovered: <font color='cyan'>%d</font>  " +
-                        "Deceased: <font color='gray'>%d</font></html>",
-                h, inf, r, d
+                        "Deceased: <font color='gray'>%d</font><br>" +
+                        "Vaccinated: <font color='#00B4B4'>%d</font>  " +
+                        "Total: <font color='white'>%d</font></html>",
+                totalHealthy, totalInfected, totalRecovered, totalDeceased,
+                totalVaccinated, totalPopulation
         ));
+
     }
 
     /**
