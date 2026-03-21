@@ -309,9 +309,13 @@ public class ContagionGUI extends JFrame {
         // Replace Healthy with Infected for newly infected people
         for (Person p : newlyInfected) {
             int idx = people.indexOf(p);
-            Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
-            people.set(idx, newInf);
-            model.infectGroup(p.ageGroup, 1);
+            if (idx != -1) {
+                Infected newInf = new Infected(p.row, p.col, p.sex, p.ageGroup, p.belief);
+                people.set(idx, newInf);
+                model.infectGroup(p.ageGroup, 1);
+            } else {
+                continue;
+            }
         }
     }
 
