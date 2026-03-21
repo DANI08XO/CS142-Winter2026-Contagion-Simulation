@@ -1,142 +1,42 @@
 
-/*
- * POPULATION SETTINGS CLASS - Stores all demographic information
- * This is a simple data holder class
- * Created based on user input in the main class
+
+/**
+ * PopulationSettings class - Stores all demographic data for the simulation.
+ * This class holds the population size, age distribution percentages,
+ * gender ratios for each age group, and vaccination rate.
+ *
+ * @author Codevid-19 Team
+ * @version 1.0
  */
-
 public class PopulationSettings {
-
-    private int populationSize;
-
-    private final String[] groupNames = {"baby", "child", "teen", "adult", "elder"}; //String array for groups
-
-    private int[] groupPercent;      // percentage of total population per group
-    private int[] groupMalePercent;  // percentage of each group that are male
-    private int vaccinatedPercent;   // percentage of total population vaccinated
-
-    // Constructor
-    public PopulationSettings(int populationSize) {
-        this.populationSize = populationSize;
-        this.groupPercent = new int[groupNames.length];
-        this.groupMalePercent = new int[groupNames.length];
-    }
-
-
-    // Getters
-    public int getPopulationSize() {
-        return populationSize;
-    }
-
-    public int getVaccinatedPercent() {
-        return vaccinatedPercent;
-    }
-
-    public int getGroupPercent(int index) {
-        if (index < 0 || index >= groupPercent.length) throw new IndexOutOfBoundsException("Invalid group index");
-        return groupPercent[index];
-    }
-
-    public int getGroupMalePercent(int index) {
-        if (index < 0 || index >= groupMalePercent.length) throw new IndexOutOfBoundsException("Invalid group index");
-        return groupMalePercent[index];
-    }
-
-    public int getGroupPercent(String groupName) {
-        for (int i = 0; i < groupNames.length; i++) {
-            if (groupNames[i].equalsIgnoreCase(groupName)) return groupPercent[i];
-        }
-        throw new IllegalArgumentException("Unknown group: " + groupName);
-    }
-
-    public int getGroupMalePercent(String groupName) {
-        for (int i = 0; i < groupNames.length; i++) {
-            if (groupNames[i].equalsIgnoreCase(groupName)) return groupMalePercent[i];
-        }
-        throw new IllegalArgumentException("Unknown group: " + groupName);
-    }
-
-    public String[] getGroupNames() {
-        return groupNames.clone(); // returns a copy to prevent external modification
-    }
-
-    // Setters
-
-    public void setGroupPercent(int index, int percent) {
-        if (index < 0 || index >= groupPercent.length) throw new IndexOutOfBoundsException("Invalid group index");
-        groupPercent[index] = percent;
-    }
-
-    public void setGroupMalePercent(int index, int percent) {
-        if (index < 0 || index >= groupMalePercent.length) throw new IndexOutOfBoundsException("Invalid group index");
-        groupMalePercent[index] = percent;
-    }
-
-    public void setGroupPercent(String groupName, int percent) {
-        for (int i = 0; i < groupNames.length; i++) {
-            if (groupNames[i].equalsIgnoreCase(groupName)) {
-                groupPercent[i] = percent;
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Unknown group: " + groupName);
-    }
-
-    public void setGroupMalePercent(String groupName, int percent) {
-        for (int i = 0; i < groupNames.length; i++) {
-            if (groupNames[i].equalsIgnoreCase(groupName)) {
-                groupMalePercent[i] = percent;
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Unknown group: " + groupName);
-    }
-
-    public void setVaccinatedPercent(int percent) {
-        this.vaccinatedPercent = percent;
-    }
-
-}
-
-
-/*
-public class PopulationSettings {
-    // BASIC POPULATION INFO
-    public int totalSize;  // Total number of people in simulation
-
-    // AGE PERCENTAGES - What percentage of population is each age group
-    public int babyPercent;    // 0-100%
-    public int childPercent;   // 0-100%
-    public int teenPercent;    // 0-100%
-    public int adultPercent;   // 0-100%
-    public int elderPercent;   // 0-100% (calculated as what's left)
-
-    // GENDER PERCENTAGES for each age group
-    // What percentage of each age group is male (rest are female)
-    public int babyMalePercent;    // 0-100% male among babies
-    public int childMalePercent;   // 0-100% male among children
-    public int teenMalePercent;    // 0-100% male among teens
-    public int adultMalePercent;   // 0-100% male among adults
-    public int elderMalePercent;   // 0-100% male among elders
-
-    // VACCINATION
-    public int vaccinatedPercent;  // What percentage is vaccinated (0-100%)
+    // Private variables - data is encapsulated
+    private int totalSize;
+    private int babyPercent;
+    private int childPercent;
+    private int teenPercent;
+    private int adultPercent;
+    private int elderPercent;
+    private int babyMalePercent;
+    private int childMalePercent;
+    private int teenMalePercent;
+    private int adultMalePercent;
+    private int elderMalePercent;
+    private int vaccinatedPercent;
 
     /**
-     * CONSTRUCTOR - Creates new PopulationSettings
-     * @param size Total population size
+     * Constructor - Creates a new PopulationSettings object.
+     *
+     * @param size The total population size
      */
-
-/*
     public PopulationSettings(int size) {
         this.totalSize = size;
 
-        // Set default values (will be overwritten by user input)
-        this.babyPercent = 20;
-        this.childPercent = 20;
-        this.teenPercent = 20;
-        this.adultPercent = 20;
-        this.elderPercent = 20;
+        // Initialize with default values
+        this.babyPercent = 0;
+        this.childPercent = 0;
+        this.teenPercent = 0;
+        this.adultPercent = 0;
+        this.elderPercent = 0;
         this.babyMalePercent = 50;
         this.childMalePercent = 50;
         this.teenMalePercent = 50;
@@ -144,5 +44,152 @@ public class PopulationSettings {
         this.elderMalePercent = 50;
         this.vaccinatedPercent = 0;
     }
+
+    // ============ GETTER METHODS ============
+
+    /** @return The total population size */
+    public int getPopulationSize() { return totalSize; }
+
+    /** @return Percentage of population that are babies */
+    public int getBabyPercent() { return babyPercent; }
+
+    /** @return Percentage of population that are children */
+    public int getChildPercent() { return childPercent; }
+
+    /** @return Percentage of population that are teens */
+    public int getTeenPercent() { return teenPercent; }
+
+    /** @return Percentage of population that are adults */
+    public int getAdultPercent() { return adultPercent; }
+
+    /** @return Percentage of population that are elders */
+    public int getElderPercent() { return elderPercent; }
+
+    /** @return Percentage of babies that are male */
+    public int getBabyMalePercent() { return babyMalePercent; }
+
+    /** @return Percentage of children that are male */
+    public int getChildMalePercent() { return childMalePercent; }
+
+    /** @return Percentage of teens that are male */
+    public int getTeenMalePercent() { return teenMalePercent; }
+
+    /** @return Percentage of adults that are male */
+    public int getAdultMalePercent() { return adultMalePercent; }
+
+    /** @return Percentage of elders that are male */
+    public int getElderMalePercent() { return elderMalePercent; }
+
+    /** @return Percentage of total population vaccinated */
+    public int getVaccinatedPercent() { return vaccinatedPercent; }
+
+    /**
+     * Gets the percentage for a specific age group by index.
+     *
+     * @param index 0=baby, 1=child, 2=teen, 3=adult, 4=elder
+     * @return The percentage for that age group
+     */
+    public int getGroupPercent(int index) {
+        switch(index) {
+            case 0: return babyPercent;
+            case 1: return childPercent;
+            case 2: return teenPercent;
+            case 3: return adultPercent;
+            case 4: return elderPercent;
+            default: return 0;
+        }
+    }
+
+    /**
+     * Gets the male percentage for a specific age group by index.
+     *
+     * @param index 0=baby, 1=child, 2=teen, 3=adult, 4=elder
+     * @return The male percentage for that age group
+     */
+    public int getGroupMalePercent(int index) {
+        switch(index) {
+            case 0: return babyMalePercent;
+            case 1: return childMalePercent;
+            case 2: return teenMalePercent;
+            case 3: return adultMalePercent;
+            case 4: return elderMalePercent;
+            default: return 50;
+        }
+    }
+
+    // ============ SETTER METHODS ============
+
+    /** @param percent Percentage of population that are babies */
+    public void setBabyPercent(int percent) { this.babyPercent = percent; }
+
+    /** @param percent Percentage of population that are children */
+    public void setChildPercent(int percent) { this.childPercent = percent; }
+
+    /** @param percent Percentage of population that are teens */
+    public void setTeenPercent(int percent) { this.teenPercent = percent; }
+
+    /** @param percent Percentage of population that are adults */
+    public void setAdultPercent(int percent) { this.adultPercent = percent; }
+
+    /** @param percent Percentage of population that are elders */
+    public void setElderPercent(int percent) { this.elderPercent = percent; }
+
+    /** @param percent Percentage of babies that are male */
+    public void setBabyMalePercent(int percent) { this.babyMalePercent = percent; }
+
+    /** @param percent Percentage of children that are male */
+    public void setChildMalePercent(int percent) { this.childMalePercent = percent; }
+
+    /** @param percent Percentage of teens that are male */
+    public void setTeenMalePercent(int percent) { this.teenMalePercent = percent; }
+
+    /** @param percent Percentage of adults that are male */
+    public void setAdultMalePercent(int percent) { this.adultMalePercent = percent; }
+
+    /** @param percent Percentage of elders that are male */
+    public void setElderMalePercent(int percent) { this.elderMalePercent = percent; }
+
+    /** @param percent Percentage of total population vaccinated */
+    public void setVaccinatedPercent(int percent) { this.vaccinatedPercent = percent; }
+
+    /**
+     * Sets the percentage for a specific age group by index.
+     *
+     * @param index 0=baby, 1=child, 2=teen, 3=adult, 4=elder
+     * @param percent The percentage to set
+     */
+    public void setGroupPercent(int index, int percent) {
+        switch(index) {
+            case 0: babyPercent = percent; break;
+            case 1: childPercent = percent; break;
+            case 2: teenPercent = percent; break;
+            case 3: adultPercent = percent; break;
+            case 4: elderPercent = percent; break;
+        }
+    }
+
+    /**
+     * Sets the male percentage for a specific age group by index.
+     *
+     * @param index 0=baby, 1=child, 2=teen, 3=adult, 4=elder
+     * @param percent The male percentage to set
+     */
+    public void setGroupMalePercent(int index, int percent) {
+        switch(index) {
+            case 0: babyMalePercent = percent; break;
+            case 1: childMalePercent = percent; break;
+            case 2: teenMalePercent = percent; break;
+            case 3: adultMalePercent = percent; break;
+            case 4: elderMalePercent = percent; break;
+        }
+    }
+
+    /**
+     * Returns the names of age groups in order.
+     *
+     * @return Array of group names
+     */
+    public String[] getGroupNames() {
+        return new String[]{"babies", "children", "adolescents", "adults", "elders"};
+    }
 }
-*/

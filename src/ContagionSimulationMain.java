@@ -1,4 +1,3 @@
-package Cont;
 
 // Final Project for CS 142: Contagion Simulation
 // Codevid-19 Group: Daniel, Kenzuki, Helen, Kushal
