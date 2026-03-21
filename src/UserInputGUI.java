@@ -135,7 +135,7 @@ public class UserInputGUI extends JFrame {
         startButton = new JButton("Choose Population Demographics");
         startButton.setFont(new Font("SansSerif", Font.BOLD, 12));
         startButton.setBackground(new Color(50, 140, 50));
-        startButton.setForeground(Color.WHITE);
+        startButton.setForeground(Color.BLACK);
         startButton.setFocusPainted(false);
         buttonPanel.add(startButton);
 
@@ -152,7 +152,7 @@ public class UserInputGUI extends JFrame {
         saveButton = new JButton(" Save Parameters");
         saveButton.setFont(new Font("SansSerif", Font.BOLD, 12));
         saveButton.setBackground(new Color(100, 100, 150));
-        saveButton.setForeground(Color.WHITE);
+        saveButton.setForeground(Color.BLACK);
         saveButton.setFocusPainted(false);
         saveButton.setToolTipText("Save current parameters to a file for later use");
         saveLoadPanel.add(saveButton);
@@ -161,7 +161,7 @@ public class UserInputGUI extends JFrame {
         loadButton = new JButton("Load Parameters");
         loadButton.setFont(new Font("SansSerif", Font.BOLD, 12));
         loadButton.setBackground(new Color(100, 100, 150));
-        loadButton.setForeground(Color.WHITE);
+        loadButton.setForeground(Color.BLACK);
         loadButton.setFocusPainted(false);
         loadButton.setToolTipText("Load previously saved parameters from a file");
         saveLoadPanel.add(loadButton);
